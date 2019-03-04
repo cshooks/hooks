@@ -2,16 +2,15 @@
   "name": "@cshooks/usetrie",
   "version": "0.0.1",
   "description": "React Hooks for using a Trie data structure",
-  "keywords": [
-    "react",
-    "hooks",
-    "trie",
-    "cs"
-  ],
   "author": "dance2die <sungmkim80@gmail.com>",
   "homepage": "https://github.com/cshooks/hooks",
   "license": "MIT",
   "main": "lib/useTrie.js",
+  "typings": "lib/useTrie.d.ts",
+  "scripts": {
+    "tsc": "tsc",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -26,9 +25,12 @@
     "type": "git",
     "url": "git+https://github.com/cshooks/hooks.git"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
+  "keywords": [
+    "react",
+    "hooks",
+    "trie",
+    "cs"
+  ],
   "bugs": {
     "url": "https://github.com/cshooks/hooks/issues"
   }
