@@ -5,8 +5,8 @@
   "author": "dance2die <sungmkim80@gmail.com>",
   "homepage": "https://github.com/cshooks/hooks",
   "license": "MIT",
-  "main": "lib/useTrie.js",
-  "typings": "lib/useTrie.d.ts",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "tsc": "tsc",
     "test": "jest",

@@ -6,7 +6,7 @@
 //     it('needs tests');
 // });
 
-import { Trie } from "../src/useTrie";
+import { Trie } from "../src/index";
 
 test("Trie has an exact search term", () => {
   const trie = new Trie(["abc", "abd"]);
