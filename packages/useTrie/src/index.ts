@@ -30,7 +30,7 @@ class TrieNode {
 class Trie {
   root: TrieNode;
 
-  constructor(words: string[], isCaseSensitive: boolean = true) {
+  constructor(words: string[], private isCaseSensitive: boolean = true) {
     this.root = new TrieNode("");
     this.buildTrie(words);
   }
@@ -39,11 +39,15 @@ class Trie {
     words.forEach(this.add);
   }
 
+  private normalizeWord = word =>
+    this.isCaseSensitive ? word : word.toLowerCase();
+
   /*
    * @param {string} word A word to check if it exists in the trie
    * @param {boolean} exactSearch Return true only if the exact word is stored
    */
-  public has = (word: string, exactSearch: boolean = true): boolean => {
+  public has = (wordToSearch: string, exactSearch: boolean = true): boolean => {
+    let word = this.normalizeWord(wordToSearch);
     if (word === "") return false;
 
     let head = this.root;
@@ -58,7 +62,8 @@ class Trie {
     return exactSearch ? head.isWord : true;
   };
 
-  public add = (word: string): void => {
+  public add = (wordToAdd: string): void => {
+    let word = this.normalizeWord(wordToAdd);
     if (this.has(word)) return;
 
     let head: TrieNode = this.root;
@@ -74,7 +79,8 @@ class Trie {
   };
 
   // https://www.geeksforgeeks.org/trie-delete/
-  public remove = (word: string): void => {
+  public remove = (wordToRemove: string): void => {
+    let word = this.normalizeWord(wordToRemove);
     if (this.isEmpty() || !this.has(word)) return;
 
     this.root = this.removeRecursively(this.root, word);

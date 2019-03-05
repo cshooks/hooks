@@ -2,23 +2,30 @@
 
 import { Trie } from "../src/index";
 
-describe("Case Sensitive Tests", () => {
+describe("Case Insensitive Tests", () => {
   const isCaseSensitive = true;
 
   test("Trie has an exact search term", () => {
     const trie = new Trie(["AbC", "aBd"], isCaseSensitive);
 
-    expect(trie.has("AbC")).toBe(false);
-    expect(trie.has("aBd")).toBe(false);
+    expect(trie.has("aBc")).toBe(true);
+    expect(trie.has("aBC")).toBe(true);
+    expect(trie.has("ABC")).toBe(true);
+    expect(trie.has("abc")).toBe(true);
+    expect(trie.has("AbC")).toBe(true);
 
-    expect(trie.has("abc")).toBe(false);
-    expect(trie.has("abd")).toBe(false);
+    expect(trie.has("AbD")).toBe(true);
+    expect(trie.has("aBD")).toBe(true);
+    expect(trie.has("ABD")).toBe(true);
+    expect(trie.has("abd")).toBe(true);
+    expect(trie.has("aBd")).toBe(true);
+
     expect(trie.has("")).toBe(false);
   });
 });
 
-describe("Case Insensitive Tests", () => {
-  const isCaseSensitive = false;
+describe("Case Sensitive Tests", () => {
+  const isCaseSensitive = true;
 
   test("Trie has an exact search term", () => {
     const trie = new Trie(["abc", "abd"], isCaseSensitive);
