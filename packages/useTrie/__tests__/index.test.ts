@@ -3,7 +3,7 @@
 import { Trie } from "../src/index";
 
 describe("Case Insensitive Tests", () => {
-  const isCaseSensitive = true;
+  const isCaseSensitive = false;
 
   test("Trie has an exact search term", () => {
     const trie = new Trie(["AbC", "aBd"], isCaseSensitive);
