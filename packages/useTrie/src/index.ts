@@ -121,8 +121,7 @@ class Trie {
  * @param isCaseSensitive: bool "Their" & "their" are different
  */
 function useTrie(initialWords: string[], isCaseSensitive = true): Trie {
-  //   const [words, setWords] = React.useState(initialWords);
-  const [trie, setTrie] = React.useState(new Trie(initialWords));
+  const [trie, _] = React.useState(new Trie(initialWords));
 
   return trie;
 }
