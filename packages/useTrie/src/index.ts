@@ -30,7 +30,7 @@ class TrieNode {
 class Trie {
   root: TrieNode;
 
-  constructor(words: string[]) {
+  constructor(words: string[], isCaseSensitive: boolean = true) {
     this.root = new TrieNode("");
     this.buildTrie(words);
   }
@@ -121,7 +121,7 @@ class Trie {
  * @param isCaseSensitive: bool "Their" & "their" are different
  */
 function useTrie(initialWords: string[], isCaseSensitive = true): Trie {
-  const [trie, _] = React.useState(new Trie(initialWords));
+  const [trie, _] = React.useState(new Trie(initialWords, isCaseSensitive));
 
   return trie;
 }

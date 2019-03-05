@@ -2,9 +2,26 @@
 
 import { Trie } from "../src/index";
 
-describe("Case Insensitive Tests", () => {
+describe("Case Sensitive Tests", () => {
+  const isCaseSensitive = true;
+
   test("Trie has an exact search term", () => {
-    const trie = new Trie(["abc", "abd"]);
+    const trie = new Trie(["AbC", "aBd"], isCaseSensitive);
+
+    expect(trie.has("AbC")).toBe(false);
+    expect(trie.has("aBd")).toBe(false);
+
+    expect(trie.has("abc")).toBe(false);
+    expect(trie.has("abd")).toBe(false);
+    expect(trie.has("")).toBe(false);
+  });
+});
+
+describe("Case Insensitive Tests", () => {
+  const isCaseSensitive = false;
+
+  test("Trie has an exact search term", () => {
+    const trie = new Trie(["abc", "abd"], isCaseSensitive);
     expect(trie.has("abc")).toBe(true);
     expect(trie.has("abd")).toBe(true);
     expect(trie.has("abx")).toBe(false);
@@ -13,14 +30,14 @@ describe("Case Insensitive Tests", () => {
   });
 
   test("Trie has a fuzz search term", () => {
-    const trie = new Trie(["abcd", "abda"]);
+    const trie = new Trie(["abcd", "abda"], isCaseSensitive);
     expect(trie.has("a", false)).toBe(true);
     expect(trie.has("d", false)).toBe(false);
     expect(trie.has("", false)).toBe(false);
   });
 
   test("Add new terms and confirm that it exists", () => {
-    const trie = new Trie([]);
+    const trie = new Trie([], isCaseSensitive);
     trie.add("abc");
     trie.add("abd");
 
@@ -35,12 +52,12 @@ describe("Case Insensitive Tests", () => {
   });
 
   test("Trying to delete from an empty trie should not fail", () => {
-    const trie = new Trie([]);
+    const trie = new Trie([], isCaseSensitive);
     expect(() => trie.remove("aaa")).not.toThrow();
   });
 
   test("Remove terms and confirm that it does not exist", () => {
-    const trie = new Trie(["abcd", "abce"]);
+    const trie = new Trie(["abcd", "abce"], isCaseSensitive);
     trie.remove("abcd");
     expect(trie.has("abcd")).toBe(false);
     expect(trie.has("a", false)).toBe(true);
@@ -59,7 +76,7 @@ describe("Case Insensitive Tests", () => {
   });
 
   test("Check if trie is empty or not", () => {
-    const trie = new Trie([]);
+    const trie = new Trie([], isCaseSensitive);
     expect(trie.isEmpty()).toBe(true);
 
     trie.add("ab");
