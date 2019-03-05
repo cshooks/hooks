@@ -22,6 +22,32 @@ describe("Case Insensitive Tests", () => {
 
     expect(trie.has("")).toBe(false);
   });
+
+  test("Trie has a fuzz search term", () => {
+    const trie = new Trie(["abcd", "abda"], isCaseSensitive);
+    expect(trie.has("a", false)).toBe(true);
+    expect(trie.has("A", false)).toBe(true);
+    expect(trie.has("ab", false)).toBe(true);
+    expect(trie.has("aB", false)).toBe(true);
+    expect(trie.has("abc", false)).toBe(true);
+    expect(trie.has("aBc", false)).toBe(true);
+    expect(trie.has("aBC", false)).toBe(true);
+    expect(trie.has("ABC", false)).toBe(true);
+    expect(trie.has("abcd", false)).toBe(true);
+    expect(trie.has("Abcd", false)).toBe(true);
+    expect(trie.has("ABcd", false)).toBe(true);
+    expect(trie.has("ABCd", false)).toBe(true);
+    expect(trie.has("ABCD", false)).toBe(true);
+
+    expect(trie.has("ay", false)).toBe(false);
+    expect(trie.has("aby", false)).toBe(false);
+    expect(trie.has("abcy", false)).toBe(false);
+    expect(trie.has("abcy", false)).toBe(false);
+    expect(trie.has("b", false)).toBe(false);
+    expect(trie.has("c", false)).toBe(false);
+    expect(trie.has("d", false)).toBe(false);
+    expect(trie.has("", false)).toBe(false);
+  });
 });
 
 describe("Case Sensitive Tests", () => {
