@@ -21,6 +21,15 @@ describe("Case Insensitive Tests", () => {
     expect(trie.has("aBd")).toBe(true);
 
     expect(trie.has("")).toBe(false);
+
+    const words = ["abcd", "abce", "ABC", "THE", "their", "there"];
+    const trie2 = new Trie(words, isCaseSensitive);
+    expect(trie2.has("ABCD")).toBe(true);
+    expect(trie2.has("ABCE")).toBe(true);
+    expect(trie2.has("abc")).toBe(true);
+    expect(trie2.has("the")).toBe(true);
+    expect(trie2.has("THEIR")).toBe(true);
+    expect(trie2.has("THERE")).toBe(true);
   });
 
   test("Trie has a fuzz search term", () => {
