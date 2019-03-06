@@ -29,9 +29,11 @@ class TrieNode {
 
 class Trie {
   root: TrieNode;
+  isCaseSensitive: boolean;
 
-  constructor(words: string[], private isCaseSensitive: boolean = true) {
+  constructor(words: string[], isCaseSensitive: boolean = true) {
     this.root = new TrieNode("");
+    this.isCaseSensitive = isCaseSensitive;
     this.buildTrie(words);
   }
 
