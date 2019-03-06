@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
+    "target": "es5",
     "module": "commonjs",
     "declaration": true,
-    "noImplicitAny": false,
-    "removeComments": true,
-    "noLib": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es6",
-    "sourceMap": true,
-    "lib": ["es6", "dom", "dom.iterable"],
-    "jsx": "react"
+    "declarationDir": "lib",
+    "outDir": "lib",
+    "rootDir": "src",
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "compileOnSave": false,
+  "buildOnSave": false
 }

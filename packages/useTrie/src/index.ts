@@ -41,7 +41,7 @@ class Trie {
     words.forEach(this.add);
   }
 
-  private normalizeWord = word =>
+  private normalizeWord = (word: string) =>
     this.isCaseSensitive ? word : word.toLowerCase();
 
   /*
