@@ -14,7 +14,7 @@
     "build:src": "tsc",
     "build:uglify": "uglifyjs -c -o lib/index.js lib/index.js",
     "prepare": "run-s clean build",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "format": "prettier"
   },
