@@ -2,10 +2,6 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "declaration": true,
-    "declarationDir": "lib",
-    "outDir": "lib",
-    "rootDir": "src",
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
