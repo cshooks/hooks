@@ -108,6 +108,10 @@ class Trie {
   public isEmpty = (root: TrieNode = this.root): boolean => {
     return Object.keys(root.children).length === 0;
   };
+
+  public search = (wordToSearch: string, exactSearch: boolean = true): string[] => {
+    return [];
+  }
 }
 
 /*

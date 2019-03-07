@@ -5,6 +5,15 @@ import { Trie } from "../src/index";
 describe("Case Insensitive Tests", () => {
   const isCaseSensitive = false;
 
+  test("Typeahead - Happy Path", () => {
+    const words = ["hello", "dog", "hell", "cat", "a", "hel", "help", "helps", "helping"];
+    const trie = new Trie(words, isCaseSensitive);
+
+    const result = trie.search("hel");
+    const expected = ["hel","hell","hello","help","helping","helps"];
+    expect(result).toBe(expected);
+  })
+
   test("Trie has an exact search term", () => {
     const trie = new Trie(["AbC", "aBd"], isCaseSensitive);
 
