@@ -1,5 +1,6 @@
 # cshooks
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+[![Known Vulnerabilities](https://snyk.io/test/github/cshooks/hooks/badge.svg?targetFile=package.json)](https://snyk.io/test/github/cshooks/hooks?targetFile=package.json)
 
 A collection of React Hooks using Computer Science (CS) data structures & algorithms.
 
