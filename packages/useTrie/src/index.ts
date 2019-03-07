@@ -1,17 +1,4 @@
-import * as React from "react";
-
-// const log = console.log;
-
-// function trie(initialWords: string[], isCaseSensitive = true) {
-//   function has(term: string): boolean {
-//     return false;
-//   }
-//   function add(term: string) {}
-//   function remove(term: string) {}
-
-//   const trie = { has, add, remove };
-//   return { trie };
-// }
+import * as React from 'react';
 
 interface ChildrenType {
   [key: string]: TrieNode;
@@ -22,7 +9,7 @@ class TrieNode {
   isWord: boolean = false;
   children: ChildrenType = {};
 
-  static Empty = new TrieNode("");
+  static Empty = new TrieNode('');
 
   constructor(public character: string) {}
 }
@@ -32,7 +19,7 @@ class Trie {
   isCaseSensitive: boolean;
 
   constructor(words: string[], isCaseSensitive: boolean = true) {
-    this.root = new TrieNode("");
+    this.root = new TrieNode('');
     this.isCaseSensitive = isCaseSensitive;
     this.buildTrie(words);
   }
@@ -50,7 +37,7 @@ class Trie {
    */
   public has = (wordToSearch: string, exactSearch: boolean = true): boolean => {
     let word = this.normalizeWord(wordToSearch);
-    if (word === "") return false;
+    if (word === '') return false;
 
     let head = this.root;
     for (let i = 0; i < word.length; i++) {
