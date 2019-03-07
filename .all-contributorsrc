@@ -1,0 +1,28 @@
+{
+  "projectName": "hooks",
+  "projectOwner": "cshooks",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "dance2die",
+      "name": "Sung M. Kim",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/8465237?v=4",
+      "profile": "https://twitter.com/dance2die",
+      "contributions": [
+        "infra",
+        "tool",
+        "test",
+        "doc",
+        "ideas",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
