@@ -112,11 +112,18 @@ class Trie {
 
   private isLastNode = (node: TrieNode): boolean =>
     Object.keys(node.children).length === 0;
+
   private searchChildren(root: TrieNode, prefix: string): string[] {
     if (root.isWord) return [`${prefix}${root.character}`];
     if (this.isLastNode(root)) return [];
 
-    throw new Error('Method not implemented.');
+    return Object.keys(root.children).reduce(
+      (acc: string[], c: string) => [
+        ...acc,
+        ...this.searchChildren(root.children[c], c),
+      ],
+      []
+    );
   }
 }
 
