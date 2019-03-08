@@ -72,10 +72,10 @@ class Trie {
     let word = this.normalizeWord(wordToRemove);
     if (this.isEmpty() || !this.has(word)) return;
 
-    this.root = this.removeRecursively(this.root, word);
+    this.root = this.removeChildren(this.root, word);
   };
 
-  private removeRecursively(
+  private removeChildren(
     node: TrieNode,
     word: string,
     depth: number = 0
@@ -92,11 +92,7 @@ class Trie {
     }
 
     const c = word[depth];
-    node.children[c] = this.removeRecursively(
-      node.children[c],
-      word,
-      depth + 1
-    );
+    node.children[c] = this.removeChildren(node.children[c], word, depth + 1);
     if (this.isEmpty(node.children[c]) && !node.children[c].isWord) {
       delete node.children[c];
       return node;
@@ -110,12 +106,18 @@ class Trie {
   };
 
   // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
-  public search = (
-    wordToSearch: string,
-    exactSearch: boolean = true
-  ): string[] => {
-    return [];
+  public search = (wordToSearch: string): string[] => {
+    return this.searchChildren(this.root, wordToSearch);
   };
+
+  private isLastNode = (node: TrieNode): boolean =>
+    Object.keys(node.children).length === 0;
+  private searchChildren(root: TrieNode, prefix: string): string[] {
+    if (root.isWord) return [`${prefix}${root.character}`];
+    if (this.isLastNode(root)) return [];
+
+    throw new Error('Method not implemented.');
+  }
 }
 
 /*
