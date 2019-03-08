@@ -109,9 +109,13 @@ class Trie {
     return Object.keys(root.children).length === 0;
   };
 
-  public search = (wordToSearch: string, exactSearch: boolean = true): string[] => {
+  // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
+  public search = (
+    wordToSearch: string,
+    exactSearch: boolean = true
+  ): string[] => {
     return [];
-  }
+  };
 }
 
 /*
