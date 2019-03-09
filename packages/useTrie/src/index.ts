@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { withStatement } from '@babel/types';
 
 interface ChildrenType {
   [key: string]: TrieNode;
@@ -107,6 +108,9 @@ class Trie {
 
   // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
   public search = (wordToSearch: string): string[] => {
+    const word = this.normalizeWord(wordToSearch);
+    if (!this.has(word)) return [] as string[];
+
     return this.searchChildren(this.root, wordToSearch);
   };
 
@@ -114,6 +118,7 @@ class Trie {
     Object.keys(node.children).length === 0;
 
   private searchChildren(root: TrieNode, prefix: string): string[] {
+    console.log(`prefix="${prefix}", root.character="${root.character}"`);
     if (root.isWord) return [`${prefix}${root.character}`];
     if (this.isLastNode(root)) return [];
 

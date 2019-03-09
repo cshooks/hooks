@@ -1,12 +1,12 @@
 module.exports = {
   // roots: ["__tests__"],
   transform: {
-    "^.+\\.tsx?$": "ts-jest"
+    '^.+\\.tsx?$': 'ts-jest',
   },
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
   // testRegex: "(/__tests__/**/*.ts?(x),**/?(*.)+(spec|test).ts?(x)",
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   // https://medium.com/@mtiller/debugging-with-typescript-jest-ts-jest-and-visual-studio-code-ef9ca8644132
-  collectCoverage: true,
-  collectCoverageFrom: ['./src/index.ts']
+  // collectCoverage: true,
+  collectCoverageFrom: ['./src/index.ts'],
 };
