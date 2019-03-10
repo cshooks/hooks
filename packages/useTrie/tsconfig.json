@@ -10,6 +10,6 @@
     "downlevelIteration": true
   },
   "typeRoots": ["node_modules/@types"],
-  "include": ["./src", "__tests__", "node_modules/@types"],
+  "include": ["./src"],
   "exclude": ["node_modules", "!node_modules/@types"]
 }
