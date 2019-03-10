@@ -8,8 +8,10 @@ describe('Typeahead', () => {
   test('If not found, return an empty array', () => {
     const words = ['a1234', 'def'];
     const trie = new Trie(words, isCaseSensitive);
+    const result = trie.search('xyz');
+    console.log(`result ===> `, result);
 
-    expect(trie.search('abc').length).toBe(0);
+    expect(result).toEqual([]);
   });
 
   test('Happy Path', () => {
@@ -23,17 +25,20 @@ describe('Typeahead', () => {
 
     const words2 = ['abcd', 'abce', 'ABC', 'THE', 'their', 'there'];
     const trie2 = new Trie(words2, isCaseSensitive);
-    expect(trie2.search('a')).toEqual(['abcd', 'abce', 'abc']);
-    expect(trie2.search('ab')).toEqual(['abcd', 'abce', 'abc']);
-    expect(trie2.search('abc')).toEqual(['abcd', 'abce', 'abc']);
+    // console.log(`trie2.search('a')`, trie2.search('a'));
+    expect(trie2.search('a').sort()).toEqual(['abcd', 'abce', 'abc'].sort());
+    expect(trie2.search('ab').sort()).toEqual(['abcd', 'abce', 'abc'].sort());
+    expect(trie2.search('abc').sort()).toEqual(['abcd', 'abce', 'abc'].sort());
     expect(trie2.search('abcd')).toEqual(['abcd']);
     expect(trie2.search('abce')).toEqual(['abce']);
-    expect(trie2.search('t')).toEqual(['the', 'their', 'there']);
-    expect(trie2.search('th')).toEqual(['the', 'their', 'there']);
-    expect(trie2.search('the')).toEqual(['the', 'their', 'there']);
-    expect(trie2.search('thei')).toEqual(['thei', 'their']);
+    expect(trie2.search('t').sort()).toEqual(['the', 'their', 'there'].sort());
+    expect(trie2.search('th').sort()).toEqual(['the', 'their', 'there'].sort());
+    expect(trie2.search('the').sort()).toEqual(
+      ['the', 'their', 'there'].sort()
+    );
+    expect(trie2.search('thei').sort()).toEqual(['thei', 'their'].sort());
     expect(trie2.search('their')).toEqual(['their']);
-    expect(trie2.search('ther')).toEqual(['ther', 'there']);
+    expect(trie2.search('ther').sort()).toEqual(['ther', 'there'].sort());
     expect(trie2.search('there')).toEqual(['there']);
   });
 });

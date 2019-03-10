@@ -115,7 +115,11 @@ class Trie {
     node: TrieNode,
     depth: number
   ): TrieNode {
-    if (depth === word.length - 1) return node;
+    const exactSearch = false;
+    if (!this.has(word, exactSearch)) return TrieNode.Empty;
+    if (depth === word.length - 1) {
+      if (node.children[word]) return node.children[word];
+    }
 
     let head = node;
     for (let i = 0; i < word.length; i++) {
@@ -124,6 +128,8 @@ class Trie {
 
       head = head.children[c];
     }
+
+    log(`head===`, head);
 
     return node;
   }
@@ -134,6 +140,7 @@ class Trie {
     const children = this.traverseToChildren(word, this.root, 0);
 
     const acc: string[] = [];
+    // log(`children for "${word}"`, JSON.stringify(children, null, 2));
     this.searchChildren(children, word[0], acc);
     return acc;
   };
