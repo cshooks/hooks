@@ -12,7 +12,9 @@ class TrieNode {
   isWord: boolean = false;
   children: ChildrenType = {};
 
-  static Empty = new TrieNode('');
+  static get Empty() {
+    return new TrieNode('');
+  }
 
   constructor(public character: string) {}
 }
@@ -129,8 +131,6 @@ class Trie {
   // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
   public search = (wordToSearch: string): string[] => {
     const word = this.normalizeWord(wordToSearch);
-    if (!this.has(word)) return [];
-
     const children = this.traverseToChildren(word, this.root, 0);
 
     const acc: string[] = [];

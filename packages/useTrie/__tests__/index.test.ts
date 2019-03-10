@@ -20,6 +20,21 @@ describe('Typeahead', () => {
     const result = trie.search('hel');
     const expected = ['hel', 'hell', 'hello', 'help', 'helping', 'helps'];
     expect(result).toEqual(expected);
+
+    const words2 = ['abcd', 'abce', 'ABC', 'THE', 'their', 'there'];
+    const trie2 = new Trie(words2, isCaseSensitive);
+    expect(trie2.search('a')).toEqual(['abcd', 'abce', 'abc']);
+    expect(trie2.search('ab')).toEqual(['abcd', 'abce', 'abc']);
+    expect(trie2.search('abc')).toEqual(['abcd', 'abce', 'abc']);
+    expect(trie2.search('abcd')).toEqual(['abcd']);
+    expect(trie2.search('abce')).toEqual(['abce']);
+    expect(trie2.search('t')).toEqual(['the', 'their', 'there']);
+    expect(trie2.search('th')).toEqual(['the', 'their', 'there']);
+    expect(trie2.search('the')).toEqual(['the', 'their', 'there']);
+    expect(trie2.search('thei')).toEqual(['thei', 'their']);
+    expect(trie2.search('their')).toEqual(['their']);
+    expect(trie2.search('ther')).toEqual(['ther', 'there']);
+    expect(trie2.search('there')).toEqual(['there']);
   });
 });
 
