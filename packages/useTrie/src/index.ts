@@ -132,29 +132,38 @@ class Trie {
     if (!this.has(word)) return [];
 
     const children = this.traverseToChildren(word, this.root, 0);
-    log(`children`, JSON.stringify(children, null, 2));
+    // log(`children`, JSON.stringify(children, null, 2));
     // return this.searchChildren(children, word[0]);
-    return Array.from(this.searchChildren(children, word[0]));
+    const acc: string[] = [];
+    // return Array.from(this.searchChildren(children, word[0], acc));
+    this.searchChildren(children, word[0], acc);
+
+    return acc;
   };
 
-  private *searchChildren(
+  private searchChildren(
     root: TrieNode,
-    prefix: string
-  ): IterableIterator<string> {
+    prefix: string,
+    acc: string[]
+  ): string[] {
     console.log(`prefix="${prefix}", root.character="${root.character}"`);
-    if (root.isWord) yield prefix;
-    if (this.isLastNode(root)) return root.character;
+    if (root.isWord) acc.push(prefix);
+    if (this.isLastNode(root)) return [];
 
-    let result = [];
-    for (const key in Object.keys(root.children)) {
-    }
+    // return Object.keys(root.children).map(c => {
+    //   log(`Object.keys c=${c}`);
+    //   return this.searchChildren(root.children[c], c, acc);
+    // });
 
     return Object.keys(root.children).reduce(
-      (acc: string[], c: string) => [
-        ...acc,
-        ...this.searchChildren(root.children[c], c),
-      ],
-      []
+      (acc, c) => {
+        console.log(`acc, c`, acc, c);
+        return [
+          ...acc,
+          ...this.searchChildren(root.children[c], prefix + c, acc),
+        ];
+      },
+      [] as string[]
     );
   }
 }
