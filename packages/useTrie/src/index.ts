@@ -132,12 +132,9 @@ class Trie {
     if (!this.has(word)) return [];
 
     const children = this.traverseToChildren(word, this.root, 0);
-    // log(`children`, JSON.stringify(children, null, 2));
-    // return this.searchChildren(children, word[0]);
-    const acc: string[] = [];
-    // return Array.from(this.searchChildren(children, word[0], acc));
-    this.searchChildren(children, word[0], acc);
 
+    const acc: string[] = [];
+    this.searchChildren(children, word[0], acc);
     return acc;
   };
 
@@ -150,21 +147,18 @@ class Trie {
     if (root.isWord) acc.push(prefix);
     if (this.isLastNode(root)) return [];
 
-    // return Object.keys(root.children).map(c => {
-    //   log(`Object.keys c=${c}`);
-    //   return this.searchChildren(root.children[c], c, acc);
-    // });
-
-    return Object.keys(root.children).reduce(
-      (acc, c) => {
-        console.log(`acc, c`, acc, c);
+    Object.keys(root.children).reduce(
+      (words, c) => {
+        console.log(`words, c`, words, c, acc);
         return [
-          ...acc,
+          ...words,
           ...this.searchChildren(root.children[c], prefix + c, acc),
         ];
       },
       [] as string[]
     );
+
+    return acc;
   }
 }
 
