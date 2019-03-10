@@ -143,18 +143,14 @@ class Trie {
     prefix: string,
     acc: string[]
   ): string[] {
-    console.log(`prefix="${prefix}", root.character="${root.character}"`);
     if (root.isWord) acc.push(prefix);
     if (this.isLastNode(root)) return [];
 
     Object.keys(root.children).reduce(
-      (words, c) => {
-        console.log(`words, c`, words, c, acc);
-        return [
-          ...words,
-          ...this.searchChildren(root.children[c], prefix + c, acc),
-        ];
-      },
+      (words, c) => [
+        ...words,
+        ...this.searchChildren(root.children[c], prefix + c, acc),
+      ],
       [] as string[]
     );
 

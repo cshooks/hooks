@@ -28,7 +28,7 @@ describe('Typeahead', () => {
 
     const result = trie.search('hel');
     const expected = ['hel', 'hell', 'hello', 'help', 'helping', 'helps'];
-    expect(result).toBe(expected);
+    expect(result).toEqual(expected);
   });
 });
 
