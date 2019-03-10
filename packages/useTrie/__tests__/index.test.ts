@@ -14,6 +14,18 @@ describe('Typeahead', () => {
     expect(result).toEqual([]);
   });
 
+  test('cannot find a removed record', () => {
+    const trie = new Trie(['abc', 'def'], isCaseSensitive);
+    expect(trie.search('abc')).toEqual(['abc']);
+    expect(trie.search('def')).toEqual(['def']);
+
+    trie.remove('abc');
+    expect(trie.search('abc')).toEqual([]);
+
+    trie.remove('def');
+    expect(trie.search('def')).toEqual([]);
+  });
+
   test('can find a newly added record', () => {
     const trie = new Trie(['abc'], isCaseSensitive);
     expect(trie.search('abc')).toEqual(['abc']);
