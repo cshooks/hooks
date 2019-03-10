@@ -18,8 +18,8 @@ class TrieNode {
 }
 
 class Trie {
-  root: TrieNode;
-  isCaseSensitive: boolean;
+  private root: TrieNode;
+  private isCaseSensitive: boolean;
 
   constructor(words: string[], isCaseSensitive: boolean = true) {
     this.root = new TrieNode('');
