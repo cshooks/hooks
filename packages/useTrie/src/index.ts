@@ -111,52 +111,74 @@ class Trie {
     Object.keys(node.children).length === 0;
 
   private traverseToChildren(
-    word: string,
     node: TrieNode,
+    word: string,
     depth: number
   ): TrieNode {
+    const c = word[depth];
+
     const exactSearch = false;
     if (!this.has(word, exactSearch)) return TrieNode.Empty;
     if (depth === word.length - 1) {
-      if (node.children[word]) return node.children[word];
+      if (node.children[c]) {
+        log(
+          `returning node.children[${c}]...`,
+          JSON.stringify(node.children[c], null, 2)
+        );
+        return node.children[c];
+      }
     }
 
-    let head = node;
-    for (let i = 0; i < word.length; i++) {
-      const c = word[depth];
-      if (!head.children[c]) return head;
+    this.traverseToChildren(node.children[c], word, depth + 1);
 
-      head = head.children[c];
-    }
+    return TrieNode.Empty;
 
-    log(`head===`, head);
+    // let head = node;
+    // for (let i = 0; i < word.length; i++) {
+    //   const c = word[depth];
+    //   if (!head.children[c]) {
+    //     log(`returning head...`, head);
+    //     return head;
+    //   }
 
-    return node;
+    //   head = head.children[c];
+    // }
+
+    // return node;
   }
 
   // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
   public search = (wordToSearch: string): string[] => {
     const word = this.normalizeWord(wordToSearch);
-    const children = this.traverseToChildren(word, this.root, 0);
+    const children = this.traverseToChildren(this.root, word, 0);
 
     const acc: string[] = [];
-    // log(`children for "${word}"`, JSON.stringify(children, null, 2));
-    this.searchChildren(children, word[0], acc);
+    log(`children for "${word}"`, JSON.stringify(children, null, 2));
+    this.searchChildren(children, word[0], word, word.length, acc);
     return acc;
   };
 
   private searchChildren(
     root: TrieNode,
     prefix: string,
+    word: string,
+    totalDepth: number,
     acc: string[]
   ): string[] {
-    if (root.isWord) acc.push(prefix);
+    if (root.isWord && (prefix.length > totalDepth || prefix === word))
+      acc.push(prefix);
     if (this.isLastNode(root)) return [];
 
     Object.keys(root.children).reduce(
       (words, c) => [
         ...words,
-        ...this.searchChildren(root.children[c], prefix + c, acc),
+        ...this.searchChildren(
+          root.children[c],
+          prefix + c,
+          word,
+          totalDepth,
+          acc
+        ),
       ],
       [] as string[]
     );
