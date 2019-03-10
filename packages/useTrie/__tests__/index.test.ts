@@ -5,13 +5,27 @@ import { Trie } from '../src/index';
 describe('Typeahead', () => {
   const isCaseSensitive = false;
 
-  test('If not found, return an empty array', () => {
+  test('return an empty array when not found', () => {
     const words = ['a1234', 'def'];
     const trie = new Trie(words, isCaseSensitive);
     const result = trie.search('xyz');
     console.log(`result ===> `, result);
 
     expect(result).toEqual([]);
+  });
+
+  test('can find a newly added record', () => {
+    const trie = new Trie(['abc'], isCaseSensitive);
+    expect(trie.search('abc')).toEqual(['abc']);
+    expect(trie.search('xyz')).toEqual([]);
+
+    trie.add('xyz');
+    expect(trie.search('xyz')).toEqual(['xyz']);
+
+    trie.add('x');
+    trie.add('xy');
+    expect(trie.search('x')).toEqual(['x', 'xy', 'xyz']);
+    expect(trie.search('xy')).toEqual(['xy', 'xyz']);
   });
 
   test('Happy Path', () => {
