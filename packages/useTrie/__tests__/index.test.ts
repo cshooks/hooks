@@ -14,15 +14,15 @@ describe('Typeahead', () => {
 
   test('Happy Path', () => {
     const words = [
-      'hello',
-      'dog',
-      'hell',
-      'cat',
       'a',
+      'dog',
+      'cat',
       'hel',
+      'hell',
+      'hello',
       'help',
-      'helps',
       'helping',
+      'helps',
     ];
     const trie = new Trie(words, isCaseSensitive);
 

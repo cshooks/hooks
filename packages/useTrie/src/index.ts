@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { withStatement } from '@babel/types';
+// import { withStatement } from '@babel/types';
+
+const log = console.log;
 
 interface ChildrenType {
   [key: string]: TrieNode;
@@ -76,11 +78,8 @@ class Trie {
     this.root = this.removeChildren(this.root, word);
   };
 
-  private removeChildren(
-    node: TrieNode,
-    word: string,
-    depth: number = 0
-  ): TrieNode {
+  // prettier-ignore
+  private removeChildren(node: TrieNode,word: string, depth: number = 0): TrieNode {
     if (!node) return TrieNode.Empty;
 
     if (depth === word.length) {
@@ -106,21 +105,49 @@ class Trie {
     return Object.keys(root.children).length === 0;
   };
 
-  // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
-  public search = (wordToSearch: string): string[] => {
-    const word = this.normalizeWord(wordToSearch);
-    if (!this.has(word)) return [] as string[];
-
-    return this.searchChildren(this.root, wordToSearch);
-  };
-
   private isLastNode = (node: TrieNode): boolean =>
     Object.keys(node.children).length === 0;
 
-  private searchChildren(root: TrieNode, prefix: string): string[] {
+  private traverseToChildren(
+    word: string,
+    node: TrieNode,
+    depth: number
+  ): TrieNode {
+    if (depth === word.length - 1) return node;
+
+    let head = node;
+    for (let i = 0; i < word.length; i++) {
+      const c = word[depth];
+      if (!head.children[c]) return head;
+
+      head = head.children[c];
+    }
+
+    return node;
+  }
+
+  // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
+  public search = (wordToSearch: string): string[] => {
+    const word = this.normalizeWord(wordToSearch);
+    if (!this.has(word)) return [];
+
+    const children = this.traverseToChildren(word, this.root, 0);
+    log(`children`, JSON.stringify(children, null, 2));
+    // return this.searchChildren(children, word[0]);
+    return Array.from(this.searchChildren(children, word[0]));
+  };
+
+  private *searchChildren(
+    root: TrieNode,
+    prefix: string
+  ): IterableIterator<string> {
     console.log(`prefix="${prefix}", root.character="${root.character}"`);
-    if (root.isWord) return [`${prefix}${root.character}`];
-    if (this.isLastNode(root)) return [];
+    if (root.isWord) yield prefix;
+    if (this.isLastNode(root)) return root.character;
+
+    let result = [];
+    for (const key in Object.keys(root.children)) {
+    }
 
     return Object.keys(root.children).reduce(
       (acc: string[], c: string) => [
