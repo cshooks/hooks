@@ -116,35 +116,12 @@ class Trie {
     depth: number
   ): TrieNode {
     const c = word[depth];
-
     const exactSearch = false;
+
     if (!this.has(word, exactSearch)) return TrieNode.Empty;
-    if (depth === word.length - 1) {
-      if (node.children[c]) {
-        log(
-          `returning node.children[${c}]...`,
-          JSON.stringify(node.children[c], null, 2)
-        );
-        return node.children[c];
-      }
-    }
+    if (depth === word.length - 1 && node.children[c]) return node.children[c];
 
-    this.traverseToChildren(node.children[c], word, depth + 1);
-
-    return TrieNode.Empty;
-
-    // let head = node;
-    // for (let i = 0; i < word.length; i++) {
-    //   const c = word[depth];
-    //   if (!head.children[c]) {
-    //     log(`returning head...`, head);
-    //     return head;
-    //   }
-
-    //   head = head.children[c];
-    // }
-
-    // return node;
+    return this.traverseToChildren(node.children[c], word, depth + 1);
   }
 
   // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
@@ -153,8 +130,10 @@ class Trie {
     const children = this.traverseToChildren(this.root, word, 0);
 
     const acc: string[] = [];
-    log(`children for "${word}"`, JSON.stringify(children, null, 2));
-    this.searchChildren(children, word[0], word, word.length, acc);
+    // log(`children for "${word}"`, JSON.stringify(children, null, 2));
+    // initially prefix === '' because the we are passing a tree with one root.
+    // the Root contains the last letter in the search term
+    this.searchChildren(children, '', word, word.length, acc);
     return acc;
   };
 
@@ -165,8 +144,7 @@ class Trie {
     totalDepth: number,
     acc: string[]
   ): string[] {
-    if (root.isWord && (prefix.length > totalDepth || prefix === word))
-      acc.push(prefix);
+    if (root.isWord) acc.push(`${word}${prefix}`);
     if (this.isLastNode(root)) return [];
 
     Object.keys(root.children).reduce(

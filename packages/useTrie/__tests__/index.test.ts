@@ -15,30 +15,29 @@ describe('Typeahead', () => {
   });
 
   test('Happy Path', () => {
-    // // prettier-ignore
-    // const words = ['a', 'dog', 'cat', 'hel', 'hell', 'hello', 'help', 'helping', 'helps'];
-    // const trie = new Trie(words, isCaseSensitive);
+    // prettier-ignore
+    const words = ['a', 'dog', 'cat', 'hel', 'hell', 'hello', 'help', 'helping', 'helps'];
+    const trie = new Trie(words, isCaseSensitive);
 
-    // const result = trie.search('hel');
-    // const expected = ['hel', 'hell', 'hello', 'help', 'helping', 'helps'];
-    // expect(result).toEqual(expected);
+    const result = trie.search('hel');
+    const expected = ['hel', 'hell', 'hello', 'help', 'helping', 'helps'];
+
+    expect(result).toEqual(expected.sort());
 
     const words2 = ['abcd', 'abce', 'ABC', 'THE', 'their', 'there'];
     const trie2 = new Trie(words2, isCaseSensitive);
-    // console.log(`trie2.search('a')`, trie2.search('a'));
-    // expect(trie2.search('a').sort()).toEqual(['abcd', 'abce', 'abc'].sort());
-    // expect(trie2.search('ab').sort()).toEqual(['abcd', 'abce', 'abc'].sort());
-    // expect(trie2.search('abc').sort()).toEqual(['abcd', 'abce', 'abc'].sort());
-    // expect(trie2.search('abcd')).toEqual(['abcd']);
-    // expect(trie2.search('abce')).toEqual(['abce']);
-    // expect(trie2.search('t').sort()).toEqual(['the', 'their', 'there'].sort());
-    // expect(trie2.search('th').sort()).toEqual(['the', 'their', 'there'].sort());
-    // expect(trie2.search('the').sort()).toEqual(
-    //   ['the', 'their', 'there'].sort()
-    // );
-    expect(trie2.search('thei').sort()).toEqual(['thei', 'their'].sort());
+
+    expect(trie2.search('a')).toEqual(['abcd', 'abce', 'abc'].sort());
+    expect(trie2.search('ab')).toEqual(['abcd', 'abce', 'abc'].sort());
+    expect(trie2.search('abc')).toEqual(['abcd', 'abce', 'abc'].sort());
+    expect(trie2.search('abcd')).toEqual(['abcd']);
+    expect(trie2.search('abce')).toEqual(['abce']);
+    expect(trie2.search('t')).toEqual(['the', 'their', 'there'].sort());
+    expect(trie2.search('th')).toEqual(['the', 'their', 'there'].sort());
+    expect(trie2.search('the')).toEqual(['the', 'their', 'there'].sort());
+    expect(trie2.search('thei')).toEqual(['their']);
     expect(trie2.search('their')).toEqual(['their']);
-    expect(trie2.search('ther').sort()).toEqual(['ther', 'there'].sort());
+    expect(trie2.search('ther')).toEqual(['there']);
     expect(trie2.search('there')).toEqual(['there']);
   });
 });
