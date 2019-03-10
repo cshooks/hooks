@@ -13,17 +13,8 @@ describe('Typeahead', () => {
   });
 
   test('Happy Path', () => {
-    const words = [
-      'a',
-      'dog',
-      'cat',
-      'hel',
-      'hell',
-      'hello',
-      'help',
-      'helping',
-      'helps',
-    ];
+    // prettier-ignore
+    const words = ['a', 'dog', 'cat', 'hel', 'hell', 'hello', 'help', 'helping', 'helps'];
     const trie = new Trie(words, isCaseSensitive);
 
     const result = trie.search('hel');
