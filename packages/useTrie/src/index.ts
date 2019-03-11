@@ -23,10 +23,12 @@ function Trie2(words: string[], isCaseSensitive: boolean = true) {
   let root = new TrieNode('');
   buildTrie(words);
 
-  // prettier-ignore
-  const normalizeWord = (word: string) => isCaseSensitive ? word : word.toLowerCase();
-  // prettier-ignore
-  const isLastNode = (node: TrieNode): boolean => Object.keys(node.children).length === 0;
+  function normalizeWord(word: string): string {
+    return isCaseSensitive ? word : word.toLowerCase();
+  }
+  function isLastNode(node: TrieNode): boolean {
+    return Object.keys(node.children).length === 0;
+  }
 
   function buildTrie(words: string[]) {
     words.forEach(add);
