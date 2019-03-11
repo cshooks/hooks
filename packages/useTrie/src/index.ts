@@ -317,5 +317,5 @@ function useTrie(initialWords: string[], isCaseSensitive = true): Trie {
   return trie;
 }
 
-export { Trie, Trie2 };
+export { Trie2 as Trie };
 export default useTrie;

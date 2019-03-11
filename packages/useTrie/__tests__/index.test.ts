@@ -1,13 +1,13 @@
 'use strict';
 
-import { Trie, Trie2 } from '../src/index';
+import { Trie } from '../src/index';
 
 describe('Typeahead', () => {
   const isCaseSensitive = false;
 
   console.log(
-    `Trie2(initialWords, isCaseSensitive)`,
-    Trie2(['abc', 'def'], isCaseSensitive)
+    `Trie(initialWords, isCaseSensitive)`,
+    Trie(['abc', 'def'], isCaseSensitive)
   );
 
   test('return an empty array when not found', () => {
