@@ -2,6 +2,28 @@
 
 import { Trie } from '../src/index';
 
+describe('Object array tests', () => {
+  describe('Typeahead', () => {
+    const isCaseSensitive = false;
+
+    test('return an empty array when not found', () => {
+      const words = [
+        { id: 1, text: 'a' },
+        { id: 2, text: 'dog' },
+        { id: 3, text: 'cat' },
+        { id: 4, text: 'hel' },
+        { id: 5, text: 'hell' },
+        { id: 6, text: 'hello' },
+        { id: 7, text: 'help' },
+        { id: 8, text: 'helping' },
+        { id: 9, text: 'helps' },
+      ];
+
+      const trie = new Trie(words, isCaseSensitive, (row: any) => row.text);
+    });
+  });
+});
+
 describe('String array tests', () => {
   describe('Typeahead', () => {
     const isCaseSensitive = false;
@@ -9,6 +31,8 @@ describe('String array tests', () => {
     test('return an empty array when not found', () => {
       const words = ['a1234', 'def'];
       const trie = new Trie(words, isCaseSensitive);
+      console.log(`trie`, JSON.stringify(trie, null, 2));
+
       const result = trie.search('xyz');
       console.log(`result ===> `, result);
 

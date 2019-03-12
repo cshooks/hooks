@@ -18,9 +18,13 @@ class TrieNode {
 
 class Trie {
   private root: TrieNode;
-  private isCaseSensitive: boolean;
+  // private isCaseSensitive: boolean;
 
-  constructor(words: string[], isCaseSensitive: boolean = true) {
+  constructor(
+    words: string[] | any[],
+    private isCaseSensitive: boolean = true,
+    private getText: (obj: any) => string = obj => obj
+  ) {
     this.root = new TrieNode('');
     this.isCaseSensitive = isCaseSensitive;
     this.buildTrie(words);
@@ -30,8 +34,10 @@ class Trie {
     words.forEach(this.add);
   }
 
-  private normalizeWord = (word: string) =>
-    this.isCaseSensitive ? word : word.toLowerCase();
+  private normalizeWord = (word: string | {}) =>
+    this.isCaseSensitive
+      ? this.getText(word)
+      : (this.getText(word) || '').toLowerCase();
 
   /*
    * @param {string} word A word to check if it exists in the trie
