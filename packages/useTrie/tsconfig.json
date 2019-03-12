@@ -7,9 +7,10 @@
     "noLib": false,
     "jsx": "react",
     "sourceMap": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "types": ["jest", "node", "react", "react-dom"]
   },
-  "typeRoots": ["node_modules/@types"],
-  "include": ["./src"],
-  "exclude": ["node_modules", "!node_modules/@types"]
+  // "typeRoots": ["node_modules/@types"],
+  "include": ["./src"]
+  // "exclude": ["node_modules", "!node_modules/@types"]
 }
