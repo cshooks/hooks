@@ -1,7 +1,4 @@
 import * as React from 'react';
-// import { withStatement } from '@babel/types';
-
-const log = console.log;
 
 interface ChildrenType {
   [key: string]: TrieNode;
