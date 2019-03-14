@@ -22,6 +22,8 @@ describe('Object array tests', () => {
       const idSelector = (row: any) => row.id;
       const textSelector = (row: any) => row.text;
       const trie = new Trie(words, isCaseSensitive, idSelector, textSelector);
+      // console.log(`trie with objects`, JSON.stringify(trie, null, 2));
+      expect(trie.search('xyz')).toEqual([]);
     });
   });
 });
