@@ -19,7 +19,9 @@ describe('Object array tests', () => {
         { id: 9, text: 'helps' },
       ];
 
-      const trie = new Trie(words, isCaseSensitive, (row: any) => row.text);
+      const idSelector = (row: any) => row.id;
+      const textSelector = (row: any) => row.text;
+      const trie = new Trie(words, isCaseSensitive, idSelector, textSelector);
     });
   });
 });

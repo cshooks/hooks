@@ -4,6 +4,9 @@ interface ChildrenType {
   [key: string]: TrieNode;
 }
 
+type Word = string | object;
+type Words = Word[];
+
 // https://www.geeksforgeeks.org/trie-insert-and-search/
 class TrieNode {
   isWord: boolean = false;
@@ -21,8 +24,9 @@ class Trie {
   // private isCaseSensitive: boolean;
 
   constructor(
-    words: string[] | any[],
+    words: Words,
     private isCaseSensitive: boolean = true,
+    private getId: (obj: any) => string = obj => obj,
     private getText: (obj: any) => string = obj => obj
   ) {
     this.root = new TrieNode('');
@@ -30,11 +34,11 @@ class Trie {
     this.buildTrie(words);
   }
 
-  private buildTrie(words: string[]): void {
+  private buildTrie(words: Words): void {
     words.forEach(this.add);
   }
 
-  private normalizeWord = (word: string | {}) =>
+  private normalizeWord = (word: Word) =>
     this.isCaseSensitive
       ? this.getText(word)
       : (this.getText(word) || '').toLowerCase();
@@ -59,7 +63,7 @@ class Trie {
     return exactSearch ? head.isWord : true;
   };
 
-  public add = (wordToAdd: string): void => {
+  public add = (wordToAdd: Word): void => {
     let word = this.normalizeWord(wordToAdd);
     if (this.has(word)) return;
 
@@ -173,13 +177,18 @@ class Trie {
  * @param initialWords: string[] List of words to build
  * @param isCaseSensitive: bool "Their" & "their" are different
  */
-function useTrie(initialWords: string[], isCaseSensitive = true): Trie {
+function useTrie(
+  initialWords: Words,
+  isCaseSensitive = true,
+  getId: (obj: any) => string = obj => obj,
+  getText: (obj: any) => string = obj => obj
+): Trie {
   const [trie, _] = React.useState(
-    () => new Trie(initialWords, isCaseSensitive)
+    () => new Trie(initialWords, isCaseSensitive, getId, getText)
   );
 
   return trie;
 }
 
-export { Trie };
+export { Trie, Word, Words };
 export default useTrie;
