@@ -9,14 +9,10 @@ type Words = Word[];
 
 // https://www.geeksforgeeks.org/trie-insert-and-search/
 class TrieNode {
-  isWord: boolean = false;
+  id: number | string | undefined;
   children: ChildrenType = {};
 
-  static get Empty() {
-    return new TrieNode('');
-  }
-
-  constructor(public character: string) {}
+  constructor(public character: string = '') {}
 }
 
 class Trie {
@@ -60,7 +56,8 @@ class Trie {
       head = head.children[c];
     }
 
-    return exactSearch ? head.isWord : true;
+    // If "id" at the current node exists, then it's a word
+    return exactSearch ? !!head.id : true;
   };
 
   public add = (wordToAdd: Word): void => {
@@ -76,7 +73,7 @@ class Trie {
       head = head.children[c];
     }
 
-    head.isWord = true;
+    head.id = this.getId(wordToAdd);
   };
 
   // https://www.geeksforgeeks.org/trie-delete/
@@ -88,21 +85,21 @@ class Trie {
   };
 
   // prettier-ignore
-  private removeChildren(node: TrieNode,word: string, depth: number = 0): TrieNode {
-    if (!node) return TrieNode.Empty;
+  private removeChildren(node: TrieNode, word: string, depth: number = 0): TrieNode {
+    if (!node) return new TrieNode();
 
     if (depth === word.length) {
       if (this.isEmpty(node)) {
-        return TrieNode.Empty;
+        return new TrieNode();
       } else {
-        node.isWord = false;
+        delete node.id;
         return node;
       }
     }
 
     const c = word[depth];
     node.children[c] = this.removeChildren(node.children[c], word, depth + 1);
-    if (this.isEmpty(node.children[c]) && !node.children[c].isWord) {
+    if (this.isEmpty(node.children[c]) && !node.children[c].id) {
       delete node.children[c];
       return node;
     }
@@ -125,7 +122,7 @@ class Trie {
     const c = word[depth];
     const exactSearch = false;
 
-    if (!this.has(word, exactSearch)) return TrieNode.Empty;
+    if (!this.has(word, exactSearch)) return new TrieNode();
     if (depth === word.length - 1 && node.children[c]) return node.children[c];
 
     return this.traverseToChildren(node.children[c], word, depth + 1);
@@ -151,7 +148,7 @@ class Trie {
     totalDepth: number,
     acc: string[]
   ): string[] {
-    if (root.isWord) acc.push(`${word}${prefix}`);
+    if (root.id) acc.push(`${word}${prefix}`);
     if (this.isLastNode(root)) return [];
 
     Object.keys(root.children).reduce(
