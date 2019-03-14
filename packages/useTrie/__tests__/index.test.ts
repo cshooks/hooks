@@ -31,10 +31,10 @@ describe('String array tests', () => {
     test('return an empty array when not found', () => {
       const words = ['a1234', 'def'];
       const trie = new Trie(words, isCaseSensitive);
-      console.log(`trie`, JSON.stringify(trie, null, 2));
 
       const result = trie.search('xyz');
-      console.log(`result ===> `, result);
+      // console.log(`trie`, JSON.stringify(trie, null, 2));
+      // console.log(`result ===> `, result);
 
       expect(result).toEqual([]);
     });
