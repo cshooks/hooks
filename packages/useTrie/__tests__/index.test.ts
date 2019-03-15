@@ -1,6 +1,7 @@
 'use strict';
 
 import { Trie } from '../src/index';
+import { object } from 'prop-types';
 
 describe('Object array tests', () => {
   describe('Typeahead', () => {
@@ -107,6 +108,50 @@ describe('Object array tests', () => {
       expect(trie2.search('their')).toEqual(['their']);
       expect(trie2.search('ther')).toEqual(['there']);
       expect(trie2.search('there')).toEqual(['there']);
+    });
+  });
+
+  describe('Case Insensitive Tests', () => {
+    const isCaseSensitive = false;
+
+    test('Trie has an exact search term', () => {
+      const words1 = [
+        { key: 1, title: 'AbC', meta: 'title - AbC' },
+        { key: 2, title: 'aBd', meta: 'title - aBd' },
+      ];
+
+      const trie = new Trie(words1, isCaseSensitive, o => o.key, o => o.title);
+
+      expect(trie.has('aBc')).toBe(true);
+      expect(trie.has('aBC')).toBe(true);
+      expect(trie.has('ABC')).toBe(true);
+      expect(trie.has('abc')).toBe(true);
+      expect(trie.has('AbC')).toBe(true);
+
+      expect(trie.has('AbD')).toBe(true);
+      expect(trie.has('aBD')).toBe(true);
+      expect(trie.has('ABD')).toBe(true);
+      expect(trie.has('abd')).toBe(true);
+      expect(trie.has('aBd')).toBe(true);
+
+      expect(trie.has('')).toBe(false);
+
+      const words2 = [
+        { key: 1, body: 'abcd', title: '1 - abcd' },
+        { key: 2, body: 'abce', title: '2 - abce' },
+        { key: 3, body: 'ABC', title: '3 - ABC' },
+        { key: 4, body: 'THE', title: '4 - THE' },
+        { key: 5, body: 'their', title: '5 - their' },
+        { key: 6, body: 'there', title: '6 - there' },
+      ];
+
+      const trie2 = new Trie(words2, isCaseSensitive, o => o.key, o => o.body);
+      expect(trie2.has('ABCD')).toBe(true);
+      expect(trie2.has('ABCE')).toBe(true);
+      expect(trie2.has('abc')).toBe(true);
+      expect(trie2.has('the')).toBe(true);
+      expect(trie2.has('THEIR')).toBe(true);
+      expect(trie2.has('THERE')).toBe(true);
     });
   });
 });
