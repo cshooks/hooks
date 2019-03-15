@@ -188,7 +188,14 @@ function useTrie(
     () => new Trie(initialWords, isCaseSensitive, getId, getText)
   );
 
-  return trie;
+  const has = async (wordToSearch: string, exactSearch: boolean = true) =>
+    trie.has(wordToSearch, exactSearch);
+  const add = async (wordToAdd: Word) => trie.add(wordToAdd);
+  const remove = async (wordToRemove: string) => trie.remove(wordToRemove);
+  const search = async (wordToSearch: string) => trie.search(wordToSearch);
+  const isEmpty = async () => trie.isEmpty();
+
+  return ({ trie: { has, add, remove, search, isEmpty } } as unknown) as Trie;
 }
 
 export { Trie, Word, Words };
