@@ -29,6 +29,7 @@ describe('Object array tests', () => {
       expect(trie.search('helllo')).toEqual([]);
       expect(trie.search('helpss')).toEqual([]);
     });
+
     test('cannot find a removed record', () => {
       const words = [
         { id: 1, meta: '1 - a', text: 'a' },
@@ -53,6 +54,26 @@ describe('Object array tests', () => {
       expect(trie.search('cat')).toEqual([]);
 
       expect(trie.isEmpty()).toBe(true);
+    });
+
+    test('can find a newly added record', () => {
+      const words = [
+        { id: 1, meta: '1 - a', text: 'a' },
+        { id: 2, meta: '2 - dog', text: 'dog' },
+        { id: 3, meta: '3 - cat', text: 'cat' },
+      ];
+
+      const idSelector = (row: any) => row.id;
+      const textSelector = (row: any) => row.text;
+      const trie = new Trie(words, isCaseSensitive, idSelector, textSelector);
+
+      trie.add({ id: 4, meta: '4 - hel', text: 'hel' });
+      trie.add({ id: 5, meta: '5 - hell', text: 'hell' });
+      trie.add({ id: 6, meta: '6 - hello', text: 'hello' });
+
+      expect(trie.search('hel')).toEqual(['hel', 'hell', 'hello'].sort());
+      expect(trie.search('hell')).toEqual(['hell', 'hello'].sort());
+      expect(trie.search('hello')).toEqual(['hello']);
     });
   });
 });
