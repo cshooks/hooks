@@ -239,6 +239,90 @@ describe('Object array tests', () => {
       expect(trie.isEmpty()).toBe(true);
     });
   });
+
+  describe('Case Sensitive Tests', () => {
+    const isCaseSensitive = true;
+
+    test('Trie has an exact search term', () => {
+      const words1 = [
+        { key: 1, title: 'AbC', meta: 'title - AbC' },
+        { key: 2, title: 'aBd', meta: 'title - aBd' },
+      ];
+
+      const trie = new Trie(words1, isCaseSensitive, o => o.key, o => o.title);
+      expect(trie.has('AbC')).toBe(true);
+      expect(trie.has('abc')).toBe(false);
+      expect(trie.has('aBd')).toBe(true);
+      expect(trie.has('ABD')).toBe(false);
+      expect(trie.has('abx')).toBe(false);
+      expect(trie.has('dex')).toBe(false);
+      expect(trie.has('')).toBe(false);
+    });
+
+    test('Trie has a fuzz search term', () => {
+      const words1 = [
+        { key: 1, title: 'abcd', meta: 'title - abcd' },
+        { key: 2, title: 'abda', meta: 'title - abda' },
+      ];
+
+      const trie = new Trie(words1, isCaseSensitive, o => o.key, o => o.title);
+      expect(trie.has('a', false)).toBe(true);
+      expect(trie.has('d', false)).toBe(false);
+      expect(trie.has('', false)).toBe(false);
+    });
+
+    test('Add new objects and confirm that it exists', () => {
+      const trie = new Trie([], isCaseSensitive, o => o.key, o => o.title);
+
+      trie.add({ key: 1, title: 'abc', meta: 'title - abc' });
+      trie.add({ key: 2, title: 'abd', meta: 'title - abd' });
+
+      expect(trie.has('abc')).toBe(true);
+      expect(trie.has('abd')).toBe(true);
+      expect(trie.has('abx')).toBe(false);
+      expect(trie.has('dex')).toBe(false);
+      expect(trie.has('')).toBe(false);
+      expect(trie.has('a', false)).toBe(true);
+      expect(trie.has('d', false)).toBe(false);
+      expect(trie.has('', false)).toBe(false);
+    });
+
+    test('Remove terms and confirm that it does not exist', () => {
+      const words1 = [
+        { key: 1, title: 'abcd', meta: 'title - abcd' },
+        { key: 2, title: 'abce', meta: 'title - abce' },
+      ];
+
+      const trie = new Trie(words1, isCaseSensitive, o => o.key, o => o.title);
+
+      trie.remove('abcd');
+      expect(trie.has('abcd')).toBe(false);
+      expect(trie.has('a', false)).toBe(true);
+      expect(trie.has('ab', false)).toBe(true);
+      expect(trie.has('abc', false)).toBe(true);
+      expect(trie.has('abce', false)).toBe(true);
+      expect(trie.has('abce')).toBe(true);
+
+      trie.remove('abce');
+      expect(trie.has('abce')).toBe(false);
+      expect(trie.isEmpty()).toBe(true);
+
+      trie.remove('abcd');
+      expect(trie.has('abcd')).toBe(false);
+      expect(trie.has('abda')).toBe(false);
+    });
+
+    test('Check if trie is empty or not', () => {
+      const trie = new Trie([], isCaseSensitive, o => o.key, o => o.title);
+      expect(trie.isEmpty()).toBe(true);
+
+      trie.add({ key: 999, title: 'ab' });
+      expect(trie.isEmpty()).toBe(false);
+
+      trie.remove('ab');
+      expect(trie.isEmpty()).toBe(true);
+    });
+  });
 });
 
 describe('String array tests', () => {
