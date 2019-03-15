@@ -201,6 +201,32 @@ describe('Object array tests', () => {
       expect(trie.has('d', false)).toBe(false);
       expect(trie.has('', false)).toBe(false);
     });
+
+    test('Remove terms and confirm that it does not exist', () => {
+      const words1 = [
+        { key: 1, title: 'abcd', meta: 'title - abcd' },
+        { key: 2, title: 'abce', meta: 'title - abce' },
+      ];
+
+      const trie = new Trie(words1, isCaseSensitive, o => o.key, o => o.title);
+
+      // As the case is "in"-sensitive, removing capitalized word should work too.
+      trie.remove('ABCD');
+      expect(trie.has('abcd')).toBe(false);
+      expect(trie.has('a', false)).toBe(true);
+      expect(trie.has('ab', false)).toBe(true);
+      expect(trie.has('abc', false)).toBe(true);
+      expect(trie.has('abce', false)).toBe(true);
+      expect(trie.has('abce')).toBe(true);
+
+      trie.remove('abce');
+      expect(trie.has('abce')).toBe(false);
+      expect(trie.isEmpty()).toBe(true);
+
+      trie.remove('abcd');
+      expect(trie.has('abcd')).toBe(false);
+      expect(trie.has('abda')).toBe(false);
+    });
   });
 });
 
