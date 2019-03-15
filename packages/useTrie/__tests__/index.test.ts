@@ -29,6 +29,31 @@ describe('Object array tests', () => {
       expect(trie.search('helllo')).toEqual([]);
       expect(trie.search('helpss')).toEqual([]);
     });
+    test('cannot find a removed record', () => {
+      const words = [
+        { id: 1, meta: '1 - a', text: 'a' },
+        { id: 2, meta: '2 - dog', text: 'dog' },
+        { id: 3, meta: '3 - cat', text: 'cat' },
+      ];
+
+      const idSelector = (row: any) => row.id;
+      const textSelector = (row: any) => row.text;
+      const trie = new Trie(words, isCaseSensitive, idSelector, textSelector);
+
+      expect(trie.search('a')).toEqual(['a']);
+      trie.remove('a');
+      expect(trie.search('a')).toEqual([]);
+
+      expect(trie.search('dog')).toEqual(['dog']);
+      trie.remove('dog');
+      expect(trie.search('dog')).toEqual([]);
+
+      expect(trie.search('cat')).toEqual(['cat']);
+      trie.remove('cat');
+      expect(trie.search('cat')).toEqual([]);
+
+      expect(trie.isEmpty()).toBe(true);
+    });
   });
 });
 

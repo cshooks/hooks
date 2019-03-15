@@ -36,8 +36,13 @@ class Trie {
 
   private normalizeWord = (word: Word) =>
     this.isCaseSensitive
-      ? this.getText(word)
-      : (this.getText(word) || '').toLowerCase();
+      ? typeof word === 'string'
+        ? word
+        : this.getText(word)
+      : (typeof word === 'string'
+          ? word
+          : this.getText(word) || ''
+        ).toLowerCase();
 
   /*
    * @param {string} word A word to check if it exists in the trie
@@ -134,7 +139,6 @@ class Trie {
     const children = this.traverseToChildren(this.root, word, 0);
 
     const acc: string[] = [];
-    // log(`children for "${word}"`, JSON.stringify(children, null, 2));
     // initially prefix === '' because the we are passing a tree with one root.
     // the Root contains the last letter in the search term
     this.searchChildren(children, '', word, word.length, acc);
@@ -148,7 +152,7 @@ class Trie {
     totalDepth: number,
     acc: string[]
   ): string[] {
-    if (root.id) acc.push(`${word}${prefix}`);
+    if (!!root.id) acc.push(`${word}${prefix}`);
     if (this.isLastNode(root)) return [];
 
     Object.keys(root.children).reduce(
