@@ -153,6 +153,38 @@ describe('Object array tests', () => {
       expect(trie2.has('THEIR')).toBe(true);
       expect(trie2.has('THERE')).toBe(true);
     });
+
+    test('Trie has a fuzz search term', () => {
+      const words1 = [
+        { key: 1, title: 'abcd', meta: 'title - abcd' },
+        { key: 2, title: 'abda', meta: 'title - abda' },
+      ];
+
+      const trie = new Trie(words1, isCaseSensitive, o => o.key, o => o.title);
+
+      expect(trie.has('a', false)).toBe(true);
+      expect(trie.has('A', false)).toBe(true);
+      expect(trie.has('ab', false)).toBe(true);
+      expect(trie.has('aB', false)).toBe(true);
+      expect(trie.has('abc', false)).toBe(true);
+      expect(trie.has('aBc', false)).toBe(true);
+      expect(trie.has('aBC', false)).toBe(true);
+      expect(trie.has('ABC', false)).toBe(true);
+      expect(trie.has('abcd', false)).toBe(true);
+      expect(trie.has('Abcd', false)).toBe(true);
+      expect(trie.has('ABcd', false)).toBe(true);
+      expect(trie.has('ABCd', false)).toBe(true);
+      expect(trie.has('ABCD', false)).toBe(true);
+
+      expect(trie.has('ay', false)).toBe(false);
+      expect(trie.has('aby', false)).toBe(false);
+      expect(trie.has('abcy', false)).toBe(false);
+      expect(trie.has('abcy', false)).toBe(false);
+      expect(trie.has('b', false)).toBe(false);
+      expect(trie.has('c', false)).toBe(false);
+      expect(trie.has('d', false)).toBe(false);
+      expect(trie.has('', false)).toBe(false);
+    });
   });
 });
 
