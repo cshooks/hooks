@@ -227,6 +227,17 @@ describe('Object array tests', () => {
       expect(trie.has('abcd')).toBe(false);
       expect(trie.has('abda')).toBe(false);
     });
+
+    test('Check if trie is empty or not', () => {
+      const trie = new Trie([], isCaseSensitive, o => o.key, o => o.title);
+      expect(trie.isEmpty()).toBe(true);
+
+      trie.add({ key: 1, title: 'abcd', meta: 'title - abcd' });
+      expect(trie.isEmpty()).toBe(false);
+
+      trie.remove('abcd');
+      expect(trie.isEmpty()).toBe(true);
+    });
   });
 });
 
