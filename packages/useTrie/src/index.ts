@@ -195,7 +195,7 @@ function useTrie(
   const search = async (wordToSearch: string) => trie.search(wordToSearch);
   const isEmpty = async () => trie.isEmpty();
 
-  return ({ trie: { has, add, remove, search, isEmpty } } as unknown) as Trie;
+  return ({ has, add, remove, search, isEmpty } as unknown) as Trie;
 }
 
 export { Trie, Word, Words };
