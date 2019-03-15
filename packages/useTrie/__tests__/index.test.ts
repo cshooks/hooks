@@ -3,28 +3,28 @@
 import { Trie } from '../src/index';
 
 describe('Object array tests', () => {
-  const isCaseSensitive = false;
-  let trie: Trie;
-  const idSelector = (row: any) => row.id;
-  const textSelector = (row: any) => row.text;
-
-  beforeAll(() => {
-    const words = [
-      { id: 1, text: 'a' },
-      { id: 2, text: 'dog' },
-      { id: 3, text: 'cat' },
-      { id: 4, text: 'hel' },
-      { id: 5, text: 'hell' },
-      { id: 6, text: 'hello' },
-      { id: 7, text: 'help' },
-      { id: 8, text: 'helping' },
-      { id: 9, text: 'helps' },
-    ];
-
-    trie = new Trie(words, isCaseSensitive, idSelector, textSelector);
-  });
-
   describe('Typeahead', () => {
+    let trie: Trie;
+    const isCaseSensitive = false;
+    const idSelector = (row: any) => row.id;
+    const textSelector = (row: any) => row.text;
+
+    beforeAll(() => {
+      const words = [
+        { id: 1, text: 'a' },
+        { id: 2, text: 'dog' },
+        { id: 3, text: 'cat' },
+        { id: 4, text: 'hel' },
+        { id: 5, text: 'hell' },
+        { id: 6, text: 'hello' },
+        { id: 7, text: 'help' },
+        { id: 8, text: 'helping' },
+        { id: 9, text: 'helps' },
+      ];
+
+      trie = new Trie(words, isCaseSensitive, idSelector, textSelector);
+    });
+
     test('return an empty array when not found', () => {
       expect(trie.search('')).toEqual([]);
       expect(trie.search('xyz')).toEqual([]);
