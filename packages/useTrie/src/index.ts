@@ -22,7 +22,7 @@ class Trie {
   constructor(
     words: Words,
     private isCaseSensitive: boolean = true,
-    private getId: (obj: any) => string = obj => obj,
+    private getId: (obj: any) => string | number = obj => obj,
     private getText: (obj: any) => string = obj => obj
   ) {
     this.root = new TrieNode('');
@@ -177,11 +177,13 @@ class Trie {
  * Build a trie for an efficient string search
  * @param initialWords: string[] List of words to build
  * @param isCaseSensitive: bool "Their" & "their" are different
+ * @param getId: (obj: any) => string | number returns an ID from an object to be added
+ * @param getText: (obj: any) => string returns a text from an object to be added
  */
 function useTrie(
   initialWords: Words,
   isCaseSensitive = true,
-  getId: (obj: any) => string = obj => obj,
+  getId: (obj: any) => string | number = obj => obj,
   getText: (obj: any) => string = obj => obj
 ): Trie {
   const [trie, _] = React.useState(
