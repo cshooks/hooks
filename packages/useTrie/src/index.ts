@@ -190,10 +190,12 @@ function useTrie(
 
   const has = async (wordToSearch: string, exactSearch: boolean = true) =>
     trie.has(wordToSearch, exactSearch);
-  const add = async (wordToAdd: Word) => trie.add(wordToAdd);
-  const remove = async (wordToRemove: string) => trie.remove(wordToRemove);
-  const search = async (wordToSearch: string) => trie.search(wordToSearch);
-  const isEmpty = async () => trie.isEmpty();
+  const add = async (wordToAdd: Word): Promise<void> => trie.add(wordToAdd);
+  const remove = async (wordToRemove: string): Promise<void> =>
+    trie.remove(wordToRemove);
+  const search = async (wordToSearch: string): Promise<string[]> =>
+    trie.search(wordToSearch);
+  const isEmpty = async (): Promise<boolean> => trie.isEmpty();
 
   return ({ has, add, remove, search, isEmpty } as unknown) as Trie;
 }
