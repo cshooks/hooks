@@ -185,6 +185,22 @@ describe('Object array tests', () => {
       expect(trie.has('d', false)).toBe(false);
       expect(trie.has('', false)).toBe(false);
     });
+
+    test('Add new objects and confirm that it exists', () => {
+      const trie = new Trie([], isCaseSensitive, o => o.key, o => o.title);
+
+      trie.add({ key: 1, title: 'abc', meta: 'title - abc' });
+      trie.add({ key: 2, title: 'abd', meta: 'title - abd' });
+
+      expect(trie.has('abc')).toBe(true);
+      expect(trie.has('abd')).toBe(true);
+      expect(trie.has('abx')).toBe(false);
+      expect(trie.has('dex')).toBe(false);
+      expect(trie.has('')).toBe(false);
+      expect(trie.has('a', false)).toBe(true);
+      expect(trie.has('d', false)).toBe(false);
+      expect(trie.has('', false)).toBe(false);
+    });
   });
 });
 
