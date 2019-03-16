@@ -2,6 +2,10 @@
 
 A React Hook that returns a [Trie](https://en.wikipedia.org/wiki/Trie), which enables a fast text match with a small memory foot print
 
+# NPM Package
+
+https://www.npmjs.com/package/@cshooks/usetrie
+
 # Installation
 
 ```bash
