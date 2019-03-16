@@ -1,7 +1,6 @@
 'use strict';
 
 import { Trie } from '../src/index';
-import { object } from 'prop-types';
 
 describe('Object array tests', () => {
   describe('Typeahead', () => {
