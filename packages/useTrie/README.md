@@ -76,6 +76,98 @@ function App() {
 
 # Demo
 
+![simple demo](cshooks-simple-demo.gif)
+
+[![Edit @cshooks/usetrie demo - simple](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/9j6r7113z4?fontsize=14)
+
+<details>
+  <summary>A Simple demo Source</summary>
+
+```ts
+import * as React from 'react';
+import { render } from 'react-dom';
+
+import useTrie, { Trie } from '@cshooks/usetrie';
+
+import './styles.css';
+
+const log = console.log;
+
+function App() {
+  // prettier-ignore
+  const words = [
+    "abcd", "abce", "ABC", "THE", "their",
+    "there", "hel", "hell", "hello", "help",
+    "helping", "helps"
+  ];
+  const isCaseSensitive = false;
+  const trie = useTrie(words, isCaseSensitive);
+
+  const [term, setTerm] = React.useState('');
+  const [isExact, setIsExact] = React.useState(true);
+
+  function checkIfTermExists(e) {
+    const { value: entered } = e.target;
+    setTerm(entered);
+  }
+
+  return (
+    <React.Fragment>
+      <header>
+        <h1>Case Insensitive search</h1>
+      </header>
+      <section>
+        <h2>Following words are available for search</h2>
+        <ul>
+          {words.map(word => (
+            <li key={word}>{word}</li>
+          ))}
+        </ul>
+      </section>
+      <section>
+        <article>
+          <div>
+            <label>
+              Enter Search Term:
+              <input type="text" value={term} onChange={checkIfTermExists} />
+            </label>
+          </div>
+          <label>
+            Exact match?
+            <input
+              type="checkbox"
+              checked={isExact}
+              onChange={e => setIsExact(e.target.checked)}
+            />
+          </label>
+        </article>
+        <article>
+          <p>
+            The term "{term}"{' '}
+            {trie.has(term, isExact) ? 'exists' : 'does not exist!'}
+          </p>
+        </article>
+        <article>
+          <h2>Possible Matches</h2>
+          <ul>
+            {trie.search(term).map(word => (
+              <li key={word}>{word}</li>
+            ))}
+          </ul>
+        </article>
+      </section>
+    </React.Fragment>
+  );
+}
+
+const rootElement = document.getElementById('root');
+render(<App />, rootElement);
+```
+
+</details>
+
+## For both String & Object arrays
+
 [![Edit @cshooks/usetrie demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/zz2mxlxzp)
 
 # API
