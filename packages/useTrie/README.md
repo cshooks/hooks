@@ -198,7 +198,7 @@ useTrie(
 type Word = string | object;
 type Words = Word[];
 
-class TrieNode {
+class Node {
   character: string;
   id: number | string | undefined;
   children: ChildrenType;
@@ -214,7 +214,7 @@ class Trie {
   has: (wordToSearch: string, exactSearch?: boolean) => boolean;
   add: (wordToAdd: Word) => void;
   remove: (wordToRemove: string) => void;
-  isEmpty: (root?: TrieNode) => boolean;
+  isEmpty: (root?: Node) => boolean;
   search: (wordToSearch: string) => string[];
 }
 ```

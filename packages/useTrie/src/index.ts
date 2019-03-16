@@ -1,22 +1,22 @@
 import * as React from 'react';
 
-interface ChildrenType {
-  [key: string]: TrieNode;
+interface Children {
+  [key: string]: Node;
 }
 
 type Word = string | object;
 type Words = Word[];
 
 // https://www.geeksforgeeks.org/trie-insert-and-search/
-class TrieNode {
+class Node {
   id: number | string | undefined;
-  children: ChildrenType = {};
+  next: Children = {};
 
   constructor(public character: string = '') {}
 }
 
 class Trie {
-  private root: TrieNode;
+  private root: Node;
   // private isCaseSensitive: boolean;
 
   constructor(
@@ -25,7 +25,7 @@ class Trie {
     private getId: (obj: any) => string | number = obj => obj,
     private getText: (obj: any) => string = obj => obj
   ) {
-    this.root = new TrieNode('');
+    this.root = new Node('');
     this.isCaseSensitive = isCaseSensitive;
     this.buildTrie(words);
   }
@@ -55,10 +55,10 @@ class Trie {
     let head = this.root;
     for (let i = 0; i < word.length; i++) {
       const c = word[i];
-      if (!head.children[c]) {
+      if (!head.next[c]) {
         return false;
       }
-      head = head.children[c];
+      head = head.next[c];
     }
 
     // If "id" at the current node exists, then it's a word
@@ -69,13 +69,13 @@ class Trie {
     let word = this.normalizeWord(wordToAdd);
     if (this.has(word)) return;
 
-    let head: TrieNode = this.root;
+    let head: Node = this.root;
     for (let i = 0; i < word.length; i++) {
       const c = word[i];
-      if (!head.children[c]) {
-        head.children[c] = new TrieNode(c);
+      if (!head.next[c]) {
+        head.next[c] = new Node(c);
       }
-      head = head.children[c];
+      head = head.next[c];
     }
 
     head.id = this.getId(wordToAdd);
@@ -90,12 +90,12 @@ class Trie {
   };
 
   // prettier-ignore
-  private removeChildren(node: TrieNode, word: string, depth: number = 0): TrieNode {
-    if (!node) return new TrieNode();
+  private removeChildren(node: Node, word: string, depth: number = 0): Node {
+    if (!node) return new Node();
 
     if (depth === word.length) {
       if (this.isEmpty(node)) {
-        return new TrieNode();
+        return new Node();
       } else {
         delete node.id;
         return node;
@@ -103,34 +103,30 @@ class Trie {
     }
 
     const c = word[depth];
-    node.children[c] = this.removeChildren(node.children[c], word, depth + 1);
-    if (this.isEmpty(node.children[c]) && !node.children[c].id) {
-      delete node.children[c];
+    node.next[c] = this.removeChildren(node.next[c], word, depth + 1);
+    if (this.isEmpty(node.next[c]) && !node.next[c].id) {
+      delete node.next[c];
       return node;
     }
 
     return node;
   }
 
-  public isEmpty = (root: TrieNode = this.root): boolean => {
-    return Object.keys(root.children).length === 0;
+  public isEmpty = (root: Node = this.root): boolean => {
+    return Object.keys(root.next).length === 0;
   };
 
-  private isLastNode = (node: TrieNode): boolean =>
-    Object.keys(node.children).length === 0;
+  private isLastNode = (node: Node): boolean =>
+    Object.keys(node.next).length === 0;
 
-  private traverseToChildren(
-    node: TrieNode,
-    word: string,
-    depth: number
-  ): TrieNode {
+  private traverseToChildren(node: Node, word: string, depth: number): Node {
     const c = word[depth];
     const exactSearch = false;
 
-    if (!this.has(word, exactSearch)) return new TrieNode();
-    if (depth === word.length - 1 && node.children[c]) return node.children[c];
+    if (!this.has(word, exactSearch)) return new Node();
+    if (depth === word.length - 1 && node.next[c]) return node.next[c];
 
-    return this.traverseToChildren(node.children[c], word, depth + 1);
+    return this.traverseToChildren(node.next[c], word, depth + 1);
   }
 
   // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
@@ -146,7 +142,7 @@ class Trie {
   };
 
   private searchChildren(
-    root: TrieNode,
+    root: Node,
     prefix: string,
     word: string,
     totalDepth: number,
@@ -155,16 +151,10 @@ class Trie {
     if (!!root.id) acc.push(`${word}${prefix}`);
     if (this.isLastNode(root)) return [];
 
-    Object.keys(root.children).reduce(
+    Object.keys(root.next).reduce(
       (words, c) => [
         ...words,
-        ...this.searchChildren(
-          root.children[c],
-          prefix + c,
-          word,
-          totalDepth,
-          acc
-        ),
+        ...this.searchChildren(root.next[c], prefix + c, word, totalDepth, acc),
       ],
       [] as string[]
     );
