@@ -1,5 +1,9 @@
 # `@cshooks/useTrie`
 
+![npm bundle size](https://img.shields.io/bundlephobia/min/@cshooks/usetrie.svg)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@cshooks/usetrie.svg)
+[![Known Vulnerabilities](https://snyk.io/test/github/cshooks/hooks/badge.svg?targetFile=packages%2FuseTrie%2Fpackage.json)](https://snyk.io/test/github/cshooks/hooks?targetFile=packages%2FuseTrie%2Fpackage.json)
+
 A React Hook that returns a [Trie](https://en.wikipedia.org/wiki/Trie), which enables a fast text match with a small memory foot print
 
 # NPM Package
