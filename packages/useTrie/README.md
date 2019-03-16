@@ -1,5 +1,6 @@
 # `@cshooks/useTrie`
 
+![npm](https://img.shields.io/npm/v/@cshooks/usetrie.svg)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/@cshooks/usetrie.svg)
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@cshooks/usetrie.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/cshooks/hooks/badge.svg?targetFile=packages%2FuseTrie%2Fpackage.json)](https://snyk.io/test/github/cshooks/hooks?targetFile=packages%2FuseTrie%2Fpackage.json)
