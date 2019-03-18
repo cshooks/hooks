@@ -1,6 +1,28 @@
 'use strict';
 
-import { Trie } from '../src/index';
+import { renderHook, cleanup, act } from 'react-hooks-testing-library';
+import useTrie, { Trie } from '../src/index';
+
+describe('useTrie Hook tests', () => {
+  afterEach(cleanup);
+
+  const isCaseSensitive = false;
+
+  test('Returns a new Trie instance on "add/remove"', () => {
+    const { result } = renderHook(() => useTrie([], isCaseSensitive));
+    const trieHook = result.current;
+
+    act(() => {
+      trieHook.add('abc');
+    });
+    expect(trieHook !== result.current).toBe(true);
+
+    act(() => {
+      trieHook.remove('abc');
+    });
+    expect(trieHook !== result.current).toBe(true);
+  });
+});
 
 describe('Object array tests', () => {
   describe('Typeahead', () => {

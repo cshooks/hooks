@@ -15,7 +15,15 @@ class Node {
   constructor(public character: string = '') {}
 }
 
-class Trie {
+interface ITrie {
+  has: (wordToSearch: string, exactSearch?: boolean) => boolean;
+  add: (wordToAdd: Word) => void;
+  remove: (wordToRemove: string) => void;
+  isEmpty: (root?: Node) => boolean;
+  search: (wordToSearch: string) => string[];
+}
+
+class Trie implements ITrie {
   private root: Node;
   // private isCaseSensitive: boolean;
 
@@ -163,6 +171,39 @@ class Trie {
   }
 }
 
+interface TrieHook {
+  has: (wordToSearch: string, exactSearch?: boolean) => boolean;
+  add: (wordToAdd: Word) => void;
+  remove: (wordToRemove: string) => void;
+  isEmpty: (root?: Node) => boolean;
+  search: (wordToSearch: string) => string[];
+}
+
+type TrieActionType = 'ADD' | 'REMOVE';
+interface TrieAction {
+  type: TrieActionType;
+  word: string | Word;
+  trie: TrieHook;
+}
+
+type ReducerState = {
+  trie: Trie;
+  word: string | Word;
+};
+
+function reducer(state: ReducerState, action: TrieAction): ReducerState {
+  switch (action.type) {
+    case 'ADD':
+      state.trie.add(action.word);
+      return { ...state, trie: state.trie };
+    case 'REMOVE':
+      state.trie.remove(action.word as string);
+      return { ...state, trie: state.trie };
+    default:
+      return state;
+  }
+}
+
 /*
  * Build a trie for an efficient string search
  * @param initialWords: string[] List of words to build
@@ -175,13 +216,24 @@ function useTrie(
   isCaseSensitive = true,
   getId: (obj: any) => string | number = obj => obj,
   getText: (obj: any) => string = obj => obj
-): Trie {
-  const [trie, _] = React.useState(
-    () => new Trie(initialWords, isCaseSensitive, getId, getText)
-  );
+): TrieHook {
+  // const [trie, _] = React.useState(
+  //   () => new Trie(initialWords, isCaseSensitive, getId, getText)
+  // );
 
-  return trie;
+  const trie = new Trie(initialWords, isCaseSensitive, getId, getText);
+  const [state, dispatch] = React.useReducer(reducer, { trie, word: '' });
+
+  function add(word: Word): void {
+    dispatch({ type: 'ADD', trie, word });
+  }
+
+  function remove(word: string): void {
+    dispatch({ type: 'REMOVE', trie, word });
+  }
+
+  return { ...state.trie, add, remove };
 }
 
-export { Trie, Word, Words };
+export { TrieHook, Trie, Word, Words };
 export default useTrie;
