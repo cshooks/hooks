@@ -217,10 +217,6 @@ function useTrie(
   getId: (obj: any) => string | number = obj => obj,
   getText: (obj: any) => string = obj => obj
 ): TrieHook {
-  // const [trie, _] = React.useState(
-  //   () => new Trie(initialWords, isCaseSensitive, getId, getText)
-  // );
-
   const trie = new Trie(initialWords, isCaseSensitive, getId, getText);
   const [state, dispatch] = React.useReducer(reducer, { trie, word: '' });
 
