@@ -9,7 +9,7 @@ type Words = Word[];
 
 // https://www.geeksforgeeks.org/trie-insert-and-search/
 class Node {
-  id: number | string | undefined;
+  id: Word | undefined;
   next: Children = {};
 
   constructor(public character: string = '') {}
@@ -20,7 +20,7 @@ interface ITrie {
   add: (wordToAdd: Word) => void;
   remove: (wordToRemove: string) => void;
   isEmpty: (root?: Node) => boolean;
-  search: (wordToSearch: string) => string[];
+  search: (wordToSearch: string) => Words;
 }
 
 class Trie implements ITrie {
@@ -86,7 +86,8 @@ class Trie implements ITrie {
       head = head.next[c];
     }
 
-    head.id = this.getId(wordToAdd);
+    // head.id = this.getId(wordToAdd);
+    head.id = wordToAdd;
   };
 
   // https://www.geeksforgeeks.org/trie-delete/
@@ -138,11 +139,11 @@ class Trie implements ITrie {
   }
 
   // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
-  public search = (wordToSearch: string): string[] => {
+  public search = (wordToSearch: string): Words => {
     const word = this.normalizeWord(wordToSearch);
     const children = this.traverseToChildren(this.root, word, 0);
 
-    const acc: string[] = [];
+    const acc: Words = [];
     // initially prefix === '' because the we are passing a tree with one root.
     // the Root contains the last letter in the search term
     this.searchChildren(children, '', word, word.length, acc);
@@ -154,9 +155,10 @@ class Trie implements ITrie {
     prefix: string,
     word: string,
     totalDepth: number,
-    acc: string[]
-  ): string[] {
-    if (!!root.id) acc.push(`${word}${prefix}`);
+    acc: Words
+  ): Words {
+    // if (!!root.id) acc.push(`${word}${prefix}`);
+    if (!!root.id) acc.push(root.id);
     if (this.isLastNode(root)) return [];
 
     Object.keys(root.next).reduce(
@@ -164,7 +166,7 @@ class Trie implements ITrie {
         ...words,
         ...this.searchChildren(root.next[c], prefix + c, word, totalDepth, acc),
       ],
-      [] as string[]
+      [] as Words
     );
 
     return acc;
@@ -176,13 +178,13 @@ interface TrieHook {
   add: (wordToAdd: Word) => void;
   remove: (wordToRemove: string) => void;
   isEmpty: (root?: Node) => boolean;
-  search: (wordToSearch: string) => string[];
+  search: (wordToSearch: string) => Words;
 }
 
 type TrieActionType = 'ADD' | 'REMOVE';
 interface TrieAction {
   type: TrieActionType;
-  word: string | Word;
+  word: Word;
   trie: TrieHook;
 }
 

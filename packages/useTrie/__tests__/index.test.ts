@@ -25,13 +25,10 @@ describe('useTrie Hook tests', () => {
 });
 
 describe('Object array tests', () => {
-  describe('Typeahead', () => {
-    let trie: Trie;
-    const isCaseSensitive = false;
-    const idSelector = (row: any) => row.id;
-    const textSelector = (row: any) => row.text;
+  const isCaseSensitive = false;
 
-    beforeAll(() => {
+  describe('Typeahead', () => {
+    test('return an empty array when not found', () => {
       const words = [
         { id: 1, text: 'a' },
         { id: 2, text: 'dog' },
@@ -44,10 +41,10 @@ describe('Object array tests', () => {
         { id: 9, text: 'helps' },
       ];
 
-      trie = new Trie(words, isCaseSensitive, idSelector, textSelector);
-    });
+      const idSelector = (row: any) => row.id;
+      const textSelector = (row: any) => row.text;
+      let trie = new Trie(words, isCaseSensitive, idSelector, textSelector);
 
-    test('return an empty array when not found', () => {
       expect(trie.search('')).toEqual([]);
       expect(trie.search('xyz')).toEqual([]);
       expect(trie.search('cay')).toEqual([]);
@@ -66,15 +63,19 @@ describe('Object array tests', () => {
       const textSelector = (row: any) => row.text;
       const trie = new Trie(words, isCaseSensitive, idSelector, textSelector);
 
-      expect(trie.search('a')).toEqual(['a']);
+      expect(trie.search('a')).toEqual([{ id: 1, meta: '1 - a', text: 'a' }]);
       trie.remove('a');
       expect(trie.search('a')).toEqual([]);
 
-      expect(trie.search('dog')).toEqual(['dog']);
+      expect(trie.search('dog')).toEqual([
+        { id: 2, meta: '2 - dog', text: 'dog' },
+      ]);
       trie.remove('dog');
       expect(trie.search('dog')).toEqual([]);
 
-      expect(trie.search('cat')).toEqual(['cat']);
+      expect(trie.search('cat')).toEqual([
+        { id: 3, meta: '3 - cat', text: 'cat' },
+      ]);
       trie.remove('cat');
       expect(trie.search('cat')).toEqual([]);
 
@@ -96,17 +97,26 @@ describe('Object array tests', () => {
       trie.add({ id: 5, meta: '5 - hell', text: 'hell' });
       trie.add({ id: 6, meta: '6 - hello', text: 'hello' });
 
-      expect(trie.search('hel')).toEqual(['hel', 'hell', 'hello'].sort());
-      expect(trie.search('hell')).toEqual(['hell', 'hello'].sort());
-      expect(trie.search('hello')).toEqual(['hello']);
+      expect(trie.search('hel')).toEqual(
+        [
+          { id: 4, meta: '4 - hel', text: 'hel' },
+          { id: 5, meta: '5 - hell', text: 'hell' },
+          { id: 6, meta: '6 - hello', text: 'hello' },
+        ].sort()
+      );
+      expect(trie.search('hell')).toEqual(
+        [
+          { id: 5, meta: '5 - hell', text: 'hell' },
+          { id: 6, meta: '6 - hello', text: 'hello' },
+        ].sort()
+      );
+      expect(trie.search('hello')).toEqual([
+        { id: 6, meta: '6 - hello', text: 'hello' },
+      ]);
     });
 
+    // prettier-ignore
     test('Happy Path', () => {
-      const result = trie.search('hel');
-      const expected = ['hel', 'hell', 'hello', 'help', 'helping', 'helps'];
-
-      expect(result).toEqual(expected.sort());
-
       const words2 = [
         { id: 1, text: 'abcd', meta: '1 - abcd' },
         { id: 2, text: 'abce', meta: '2 - abce' },
@@ -115,20 +125,34 @@ describe('Object array tests', () => {
         { id: 5, text: 'their', meta: '5 - their' },
         { id: 6, text: 'there', meta: '6 - there' },
       ];
+      const idSelector = (row: any) => row.id;
+      const textSelector = (row: any) => row.text;
       const trie2 = new Trie(words2, isCaseSensitive, idSelector, textSelector);
 
-      expect(trie2.search('a')).toEqual(['abcd', 'abce', 'abc'].sort());
-      expect(trie2.search('ab')).toEqual(['abcd', 'abce', 'abc'].sort());
-      expect(trie2.search('abc')).toEqual(['abcd', 'abce', 'abc'].sort());
-      expect(trie2.search('abcd')).toEqual(['abcd']);
-      expect(trie2.search('abce')).toEqual(['abce']);
-      expect(trie2.search('t')).toEqual(['the', 'their', 'there'].sort());
-      expect(trie2.search('th')).toEqual(['the', 'their', 'there'].sort());
-      expect(trie2.search('the')).toEqual(['the', 'their', 'there'].sort());
-      expect(trie2.search('thei')).toEqual(['their']);
-      expect(trie2.search('their')).toEqual(['their']);
-      expect(trie2.search('ther')).toEqual(['there']);
-      expect(trie2.search('there')).toEqual(['there']);
+      const expectedForA = [
+        { id: 3, text: 'ABC', meta: '3 - ABC' },
+        { id: 1, text: 'abcd', meta: '1 - abcd' },
+        { id: 2, text: 'abce', meta: '2 - abce' },
+      ].sort();
+      expect(trie2.search('a')).toEqual(expectedForA);
+      expect(trie2.search('ab')).toEqual(expectedForA);
+      expect(trie2.search('abc')).toEqual(expectedForA);
+      
+      expect(trie2.search('abcd')).toEqual([{ id: 1, text: 'abcd', meta: '1 - abcd' }]);
+      expect(trie2.search('abce')).toEqual([{ id: 2, text: 'abce', meta: '2 - abce' }]);
+      
+      const expectedForT = [
+        { id: 4, text: 'THE', meta: '4 - THE' },
+        { id: 5, text: 'their', meta: '5 - their' },
+        { id: 6, text: 'there', meta: '6 - there' },
+      ].sort();
+      expect(trie2.search('t')).toEqual(expectedForT);
+      expect(trie2.search('th')).toEqual(expectedForT);
+      expect(trie2.search('the')).toEqual(expectedForT);
+      expect(trie2.search('thei')).toEqual([{ id: 5, text: 'their', meta: '5 - their' }]);
+      expect(trie2.search('their')).toEqual([{ id: 5, text: 'their', meta: '5 - their' }]);
+      expect(trie2.search('ther')).toEqual([{ id: 6, text: 'there', meta: '6 - there' }]);
+      expect(trie2.search('there')).toEqual([{ id: 6, text: 'there', meta: '6 - there' }]);
     });
   });
 
@@ -400,14 +424,14 @@ describe('String array tests', () => {
       const words2 = ['abcd', 'abce', 'ABC', 'THE', 'their', 'there'];
       const trie2 = new Trie(words2, isCaseSensitive);
 
-      expect(trie2.search('a')).toEqual(['abcd', 'abce', 'abc'].sort());
-      expect(trie2.search('ab')).toEqual(['abcd', 'abce', 'abc'].sort());
-      expect(trie2.search('abc')).toEqual(['abcd', 'abce', 'abc'].sort());
+      expect(trie2.search('a')).toEqual(['abcd', 'abce', 'ABC'].sort());
+      expect(trie2.search('ab')).toEqual(['abcd', 'abce', 'ABC'].sort());
+      expect(trie2.search('abc')).toEqual(['abcd', 'abce', 'ABC'].sort());
       expect(trie2.search('abcd')).toEqual(['abcd']);
       expect(trie2.search('abce')).toEqual(['abce']);
-      expect(trie2.search('t')).toEqual(['the', 'their', 'there'].sort());
-      expect(trie2.search('th')).toEqual(['the', 'their', 'there'].sort());
-      expect(trie2.search('the')).toEqual(['the', 'their', 'there'].sort());
+      expect(trie2.search('t')).toEqual(['THE', 'their', 'there'].sort());
+      expect(trie2.search('th')).toEqual(['THE', 'their', 'there'].sort());
+      expect(trie2.search('the')).toEqual(['THE', 'their', 'there'].sort());
       expect(trie2.search('thei')).toEqual(['their']);
       expect(trie2.search('their')).toEqual(['their']);
       expect(trie2.search('ther')).toEqual(['there']);
