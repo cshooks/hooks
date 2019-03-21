@@ -94,7 +94,8 @@ describe('Object array tests', () => {
       const trie = new Trie(words, isCaseSensitive, idSelector, textSelector);
 
       trie.add({ id: 4, meta: '4 - hel', text: 'hel' });
-      trie.add({ id: 5, meta: '5 - hell', text: 'hell' });
+      // Passing a custom ID & text selector should work too
+      trie.add({ id: 5, meta: '5 - hell', text: 'hell' }, o => o.id, o => o.text);
       trie.add({ id: 6, meta: '6 - hello', text: 'hello' });
 
       expect(trie.search('hel')).toEqual(

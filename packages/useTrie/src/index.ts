@@ -28,7 +28,7 @@ class Trie implements ITrie {
   // private isCaseSensitive: boolean;
 
   constructor(
-    words: Words,
+    words: Words = [],
     private isCaseSensitive: boolean = true,
     private getId: (obj: any) => string | number = obj => obj,
     private getText: (obj: any) => string = obj => obj
@@ -39,7 +39,7 @@ class Trie implements ITrie {
   }
 
   private buildTrie(words: Words): void {
-    words.forEach(this.add);
+    words.forEach(word => this.add(word, this.getId, this.getText));
   }
 
   private normalizeWord = (word: Word) =>
@@ -73,7 +73,14 @@ class Trie implements ITrie {
     return exactSearch ? !!head.id : true;
   };
 
-  public add = (wordToAdd: Word): void => {
+  public add = (
+    wordToAdd: Word,
+    getId: (obj: any) => string | number = obj => obj,
+    getText: (obj: any) => string = obj => obj
+  ): void => {
+    this.getId = this.getId || getId;
+    this.getText = this.getText || getText;
+
     let word = this.normalizeWord(wordToAdd);
     if (this.has(word)) return;
 
