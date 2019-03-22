@@ -5,7 +5,7 @@
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@cshooks/usetrie.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/cshooks/hooks/badge.svg?targetFile=packages%2FuseTrie%2Fpackage.json)](https://snyk.io/test/github/cshooks/hooks?targetFile=packages%2FuseTrie%2Fpackage.json)
 
-A React Hook that returns a [Trie](https://en.wikipedia.org/wiki/Trie), which enables a fast text match with a small memory foot print
+A React Hook that returns a [Trie](https://en.wikipedia.org/wiki/Trie), which enables a fast text match (Typeahead).
 
 # NPM Package
 
@@ -42,6 +42,10 @@ function App() {
   const isCaseSensitive = false;
   const trie = useTrie(words, isCaseSensitive);
 
+  // or initialize and add/remove words later on
+  // It's case "sensitive" by default
+  const trie = useTrie();
+
   return <div>...</div>;
 }
 ```
@@ -72,6 +76,15 @@ function App() {
 
   return <div>...</div>;
 }
+```
+
+When you add/remove an item in the trie, a new instance of trie is returned,
+so you can monitor on the `trie` dep when searching for a word.
+
+```js
+  const getMatches = React.useCallback(() => {
+    return trie.search(state.term).map(word => <li key={word}>{word}</li>);
+  }, [trie]);
 ```
 
 # Demo
