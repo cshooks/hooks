@@ -25,7 +25,6 @@ interface ITrie {
 
 class Trie implements ITrie {
   private root: Node;
-  // private isCaseSensitive: boolean;
 
   constructor(
     words: Words = [],
@@ -93,7 +92,6 @@ class Trie implements ITrie {
       head = head.next[c];
     }
 
-    // head.id = this.getId(wordToAdd);
     head.id = wordToAdd;
   };
 
@@ -105,7 +103,6 @@ class Trie implements ITrie {
     this.root = this.removeChildren(this.root, word);
   };
 
-  // prettier-ignore
   private removeChildren(node: Node, word: string, depth: number = 0): Node {
     if (!node) return new Node();
 
@@ -164,7 +161,6 @@ class Trie implements ITrie {
     totalDepth: number,
     acc: Words
   ): Words {
-    // if (!!root.id) acc.push(`${word}${prefix}`);
     if (!!root.id) acc.push(root.id);
     if (this.isLastNode(root)) return [];
 
