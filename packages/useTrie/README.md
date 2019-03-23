@@ -68,11 +68,10 @@ function App() {
     { id: 9, text: 'helps' metadata: "9 - helps"},
   ];
   const isCaseSensitive = false;
-  const idSelector = row => row.id;
   const textSelector = row => row.text;
-  const trie = useTrie(words, isCaseSensitive, idSelector, textSelector);
-  // or just pass lambdas (anonymous functions)
-  const trie = useTrie(words, isCaseSensitive, o => o.id, o => o.text);
+  const trie = useTrie(words, isCaseSensitive, textSelector);
+  // or just pass a lambda (anonymous function)
+  const trie = useTrie(words, isCaseSensitive, o => o.text);
 
   return <div>...</div>;
 }
@@ -284,7 +283,6 @@ render(
 useTrie(
   initialWords: Words,
   isCaseSensitive = true,
-  getId?: (obj: any) => string | number = obj => obj,
   getText?: (obj: any) => string = obj => obj
 ): Trie
 ```
@@ -292,8 +290,6 @@ useTrie(
 - `initialWords: Words`: An array of string or object to populate the trie with
 - `isCaseSensitive: boolean`: Word comparison flag
   - Is "abc" === "ABC"? If `isCaseSensitive === true`, then false else true
-- `getId?: (obj: any) => string | number = obj => obj`: "ID" selector when dealing with an object array
-  - e.g.) When `[{id: 1, text: "text1"}, {id: 2, text: "text2"}]` is passed as `initialWords`, then `o => o.id` would use the `id` property as the ID property internally.
 - `getText?: (obj: any) => string = obj => obj`: "Text" selector when when dealing with an object Array
   - e.g.) When `[{id: 1, text: "text1"}, {id: 2, text: "text2"}]` is passed as `initialWords`, then `o => o.text` would use the `text` property as the text to store internally.
 
@@ -314,7 +310,6 @@ class Trie {
   constructor(
     words: Words,
     isCaseSensitive?: boolean,
-    getId?: (obj: any) => string | number,
     getText?: (obj: any) => string
   );
   has: (wordToSearch: string, exactSearch?: boolean) => boolean;

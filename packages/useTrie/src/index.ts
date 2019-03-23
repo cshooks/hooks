@@ -16,11 +16,11 @@ class Node {
 }
 
 interface ITrie {
-  has: (wordToSearch: string, exactSearch?: boolean) => boolean;
-  add: (wordToAdd: Word) => void;
-  remove: (wordToRemove: string) => void;
+  has: (word: string, exactSearch?: boolean) => boolean;
+  add: (word: Word, getText?: (obj: any) => string) => void;
+  remove: (word: string) => void;
   isEmpty: (root?: Node) => boolean;
-  search: (wordToSearch: string) => Words;
+  search: (word: string) => Words;
 }
 
 class Trie implements ITrie {
@@ -173,19 +173,11 @@ class Trie implements ITrie {
   }
 }
 
-interface TrieHook {
-  has: (wordToSearch: string, exactSearch?: boolean) => boolean;
-  add: (wordToAdd: Word) => void;
-  remove: (wordToRemove: string) => void;
-  isEmpty: (root?: Node) => boolean;
-  search: (wordToSearch: string) => Words;
-}
-
 type TrieActionType = 'ADD' | 'REMOVE';
 interface TrieAction {
   type: TrieActionType;
   word: Word;
-  trie: TrieHook;
+  trie: ITrie;
 }
 
 type ReducerState = {
@@ -217,7 +209,7 @@ function useTrie(
   initialWords: Words,
   isCaseSensitive = true,
   getText: (obj: any) => string = obj => obj
-): TrieHook {
+): ITrie {
   const trie = new Trie(initialWords, isCaseSensitive, getText);
   const [state, dispatch] = React.useReducer(reducer, { trie, word: '' });
 
@@ -232,5 +224,5 @@ function useTrie(
   return { ...state.trie, add, remove };
 }
 
-export { TrieHook, Trie, Word, Words };
+export { ITrie, Trie, Word, Words };
 export default useTrie;
