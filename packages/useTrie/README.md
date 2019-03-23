@@ -32,18 +32,18 @@ You can initialize the trie with either an array of
 ## 1. Initializing the trie with an array of `strings`
 
 Pass an array of string to the `useTrie` hook and optionally specify the case sensitivity  
-(**default**: `isCaseSensitive = true`)
+(**default**: `isCaseInsensitive = true`)
 
 ```jsx
 import useTrie from '@cshooks/usetrie';
 
 function App() {
   const words = ['abcd', 'abce', 'ABC', 'THE', 'their', 'there'];
-  const isCaseSensitive = false;
-  const trie = useTrie(words, isCaseSensitive);
+  const isCaseInsensitive = true;
+  const trie = useTrie(words, isCaseInsensitive);
 
   // or initialize and add/remove words later on
-  // It's case "sensitive" by default
+  // It's case-INsensitive" by default
   const trie = useTrie();
 
   return <div>...</div>;
@@ -69,11 +69,11 @@ function App() {
     { id: 8, text: 'helping' metadata: "8 - helping"},
     { id: 9, text: 'helps' metadata: "9 - helps"},
   ];
-  const isCaseSensitive = false;
+  const isCaseInsensitive = true;
   const textSelector = row => row.text;
-  const trie = useTrie(words, isCaseSensitive, textSelector);
+  const trie = useTrie(words, isCaseInsensitive, textSelector);
   // or just pass a lambda (anonymous function)
-  const trie = useTrie(words, isCaseSensitive, o => o.text);
+  const trie = useTrie(words, isCaseInsensitive, o => o.text);
 
   return <div>...</div>;
 }
@@ -82,7 +82,7 @@ function App() {
 When you add a new "word" object to the trie, if you had already initialize the hook with a text selector method, then there is no need to specify it again.
 
 ```js
-const trie = useTrie(words, isCaseSensitive, o => o.text);
+const trie = useTrie(words, isCaseInsensitive, o => o.text);
 // ... elsewhere in the code
 trie.add({ id: 99, text: 'large text here' });
 ```
@@ -90,7 +90,7 @@ trie.add({ id: 99, text: 'large text here' });
 If you have already initialized the hook with the text selector but specify it again in the `add`, then the text selector passed in the `add` overwrites the one specified during the initialization.
 
 ```js
-const trie = useTrie(words, isCaseSensitive, o => o.text);
+const trie = useTrie(words, isCaseInsensitive, o => o.text);
 // ... elsewhere in the code
 trie.add({ id: 999, title: 'Title to search' }, o => o.title);
 // No need to specify the text selector in subsequent "add" calls.
@@ -121,7 +121,6 @@ import { render } from 'react-dom';
 
 import useTrie, { Trie } from '@cshooks/usetrie';
 import styled, { createGlobalStyle } from 'styled-components';
-// import { Reset } from "styled-reset";
 
 import './styles.css';
 
@@ -163,8 +162,8 @@ function App() {
     "there", "hel", "hell", "hello", "help",
     "helping", "helps"
   ];
-  const isCaseSensitive = false;
-  const trie = useTrie(initialWords, isCaseSensitive);
+  const isCaseInsensitive = false;
+  const trie = useTrie(initialWords, isCaseInsensitive);
 
   const initialState = {
     words: initialWords,
@@ -302,14 +301,14 @@ render(
 ```ts
 useTrie(
   initialWords: Words,
-  isCaseSensitive = true,
+  isCaseInsensitive = true,
   getText?: (obj: any) => string = obj => obj
 ): Trie
 ```
 
 - `initialWords: Words`: An array of string or object to populate the trie with
-- `isCaseSensitive: boolean`: Word comparison flag
-  - Is "abc" === "ABC"? If `isCaseSensitive === true`, then false else true
+- `isCaseInsensitive: boolean`: Word comparison flag
+  - Is "abc" === "ABC"? If `isCaseInsensitive === true`, then false else true
 - `getText?: (obj: any) => string = obj => obj`: "Text" selector when when dealing with an object Array
   - e.g.) When `[{id: 1, text: "text1"}, {id: 2, text: "text2"}]` is passed as `initialWords`, then `o => o.text` would use the `text` property as the text to store internally.
 
@@ -320,7 +319,7 @@ useTrie(
 declare type Word = string | object;
 declare type Words = Word[];
 interface ITrie {
-  has: (word: string, exactSearch?: boolean) => boolean;
+  has: (word: string, exactSearch: boolean = true) => boolean;
   add: (word: Word, getText?: (obj: any) => string) => void;
   remove: (word: string) => void;
   isEmpty: () => boolean;
@@ -328,11 +327,11 @@ interface ITrie {
 }
 declare class Trie implements ITrie {
   constructor(
-    words?: Words,
-    isCaseSensitive?: boolean,
-    getText?: (obj: any) => string
+    words: Words = [],
+    private isCaseInsensitive: boolean = true,
+    private getText: (obj: any) => string = obj => obj
   );
-  has: (wordToSearch: string, exactSearch?: boolean) => boolean;
+  has: (wordToSearch: string, exactSearch: boolean = true) => boolean;
   add: (wordToAdd: Word, getText?: (obj: any) => string) => void;
   remove: (wordToRemove: string) => void;
   isEmpty: () => boolean;
@@ -340,7 +339,7 @@ declare class Trie implements ITrie {
 }
 declare function useTrie(
   initialWords: Words,
-  isCaseSensitive?: boolean,
+  isCaseInsensitive?: boolean,
   getText?: (obj: any) => string
 ): ITrie;
 export { ITrie, Trie, Word, Words };
@@ -358,9 +357,15 @@ export default useTrie;
   - Check if the `word` exists in the trie
   - `word` - a word to search in trie
   - `exactSearch` - match the `word` exactly else does a fuzzy match
-- `add = (word: string): void`
+- `add: (wordToAdd: Word, getText?: (obj: any) => string) => void;`
   - Add the `word` to trie
+  - If the `wordToAdd` is an object and not specified in the `useTrie`, then pass the `getText` callback to let `trie` know how to extract the text from the object.
+    - This `getText` callback persists
 - `remove = (word: string): void`
   - Remove the `word` from trie
 - `isEmpty = (): boolean`
   - Check if the current trie contains any words in it or not
+
+## Additional Note
+
+`useTrie` returns an instance of type, `ITrie` instead of `Trie` due to `Trie` exposing more properties than necessary (due to lack of my TypeScript proficiency 😅)
