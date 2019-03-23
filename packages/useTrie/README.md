@@ -5,7 +5,7 @@
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@cshooks/usetrie.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/cshooks/hooks/badge.svg?targetFile=packages%2FuseTrie%2Fpackage.json)](https://snyk.io/test/github/cshooks/hooks?targetFile=packages%2FuseTrie%2Fpackage.json)
 
-A React Hook that returns a [Trie](https://en.wikipedia.org/wiki/Trie), which enables a fast text match (Typeahead).
+A React Hook that returns a [Trie](https://en.wikipedia.org/wiki/Trie), which enables a fast text match ([Typeahead](https://en.wikipedia.org/wiki/Typeahead)).
 
 # NPM Package
 
@@ -52,6 +52,8 @@ function App() {
 
 ## 2. Initializing the trie with an array of `objects`
 
+**Note** that you need to pass the text selector method to let `useTrie` know how to extract a text object from your object (refer to the 3rd parameter, `textSelector`).
+
 ```jsx
 import useTrie from '@cshooks/usetrie';
 
@@ -75,6 +77,24 @@ function App() {
 
   return <div>...</div>;
 }
+```
+
+When you add a new "word" object to the trie, if you had already initialize the hook with a text selector method, then there is no need to specify it again.
+
+```js
+const trie = useTrie(words, isCaseSensitive, o => o.text);
+// ... elsewhere in the code
+trie.add({ id: 99, text: 'large text here' });
+```
+
+If you have already initialized the hook with the text selector but specify it again in the `add`, then the text selector passed in the `add` overwrites the one specified during the initialization.
+
+```js
+const trie = useTrie(words, isCaseSensitive, o => o.text);
+// ... elsewhere in the code
+trie.add({ id: 999, title: 'Title to search' }, o => o.title);
+// No need to specify the text selector in subsequent "add" calls.
+trie.add({ id: 123, title: 'Next title to search' });
 ```
 
 When you add/remove an item in the trie, a new instance of trie is returned,
