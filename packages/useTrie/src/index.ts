@@ -28,11 +28,11 @@ class Trie implements ITrie {
 
   constructor(
     words: Words = [],
-    private isCaseSensitive: boolean = true,
+    private isCaseInsensitive: boolean = true,
     private getText: (obj: any) => string = obj => obj
   ) {
     this.root = new Node('');
-    this.isCaseSensitive = isCaseSensitive;
+    this.isCaseInsensitive = isCaseInsensitive;
     this.buildTrie(words);
   }
 
@@ -41,14 +41,14 @@ class Trie implements ITrie {
   }
 
   private normalizeWord = (word: Word) =>
-    this.isCaseSensitive
-      ? typeof word === 'string'
-        ? word
-        : this.getText(word)
-      : (typeof word === 'string'
+    this.isCaseInsensitive
+      ? (typeof word === 'string'
           ? word
           : this.getText(word) || ''
-        ).toLowerCase();
+        ).toLowerCase()
+      : typeof word === 'string'
+      ? word
+      : this.getText(word);
 
   /*
    * @param {string} word A word to check if it exists in the trie
@@ -204,16 +204,16 @@ function reducer(state: ReducerState, action: TrieAction): ReducerState {
 /*
  * Build a trie for an efficient string search
  * @param initialWords: string[] List of words to build
- * @param isCaseSensitive: bool "Their" & "their" are different
+ * @param isCaseInsensitive: bool "Their" & "their" are different
  * @param getId: (obj: any) => string | number returns an ID from an object to be added
  * @param getText: (obj: any) => string returns a text from an object to be added
  */
 function useTrie(
   initialWords: Words,
-  isCaseSensitive = true,
+  isCaseInsensitive = true,
   getText: (obj: any) => string = obj => obj
 ): ITrie {
-  const trie = new Trie(initialWords, isCaseSensitive, getText);
+  const trie = new Trie(initialWords, isCaseInsensitive, getText);
   const [state, dispatch] = React.useReducer(reducer, { trie, word: '' });
 
   function add(word: Word): void {

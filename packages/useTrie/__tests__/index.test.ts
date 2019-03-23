@@ -6,10 +6,10 @@ import useTrie, { Trie } from '../src/index';
 describe('useTrie Hook tests', () => {
   afterEach(cleanup);
 
-  const isCaseSensitive = false;
+  const isCaseInsensitive = true;
 
   test('Returns a new Trie instance on "add/remove"', () => {
-    const { result } = renderHook(() => useTrie([], isCaseSensitive));
+    const { result } = renderHook(() => useTrie([], isCaseInsensitive));
     const trieHook = result.current;
 
     act(() => {
@@ -25,7 +25,7 @@ describe('useTrie Hook tests', () => {
 });
 
 describe('Object array tests', () => {
-  const isCaseSensitive = false;
+  const isCaseInsensitive = true;
 
   describe('Typeahead', () => {
     test('return an empty array when not found', () => {
@@ -42,7 +42,7 @@ describe('Object array tests', () => {
       ];
 
       const textSelector = (row: any) => row.text;
-      let trie = new Trie(words, isCaseSensitive, textSelector);
+      let trie = new Trie(words, isCaseInsensitive, textSelector);
 
       expect(trie.search('')).toEqual([]);
       expect(trie.search('xyz')).toEqual([]);
@@ -59,7 +59,7 @@ describe('Object array tests', () => {
       ];
 
       const textSelector = (row: any) => row.text;
-      const trie = new Trie(words, isCaseSensitive, textSelector);
+      const trie = new Trie(words, isCaseInsensitive, textSelector);
 
       expect(trie.search('a')).toEqual([{ id: 1, meta: '1 - a', text: 'a' }]);
       trie.remove('a');
@@ -88,7 +88,7 @@ describe('Object array tests', () => {
       ];
 
       const textSelector = (row: any) => row.text;
-      const trie = new Trie(words, isCaseSensitive, textSelector);
+      const trie = new Trie(words, isCaseInsensitive, textSelector);
 
       trie.add({ id: 4, meta: '4 - hel', text: 'hel' });
       // Passing a custom text selector should work too
@@ -125,7 +125,7 @@ describe('Object array tests', () => {
       ];
       
       const textSelector = (row: any) => row.text;
-      const trie2 = new Trie(words2, isCaseSensitive, textSelector);
+      const trie2 = new Trie(words2, isCaseInsensitive, textSelector);
 
       const expectedForA = [
         { id: 3, text: 'ABC', meta: '3 - ABC' },
@@ -155,7 +155,7 @@ describe('Object array tests', () => {
   });
 
   describe('Case Insensitive Tests', () => {
-    const isCaseSensitive = false;
+    const isCaseInsensitive = true;
 
     test('Trie has an exact search term', () => {
       const words1 = [
@@ -163,7 +163,7 @@ describe('Object array tests', () => {
         { key: 2, title: 'aBd', meta: 'title - aBd' },
       ];
 
-      const trie = new Trie(words1, isCaseSensitive, o => o.title);
+      const trie = new Trie(words1, isCaseInsensitive, o => o.title);
 
       expect(trie.has('aBc')).toBe(true);
       expect(trie.has('aBC')).toBe(true);
@@ -188,7 +188,7 @@ describe('Object array tests', () => {
         { key: 6, body: 'there', title: '6 - there' },
       ];
 
-      const trie2 = new Trie(words2, isCaseSensitive, o => o.body);
+      const trie2 = new Trie(words2, isCaseInsensitive, o => o.body);
       expect(trie2.has('ABCD')).toBe(true);
       expect(trie2.has('ABCE')).toBe(true);
       expect(trie2.has('abc')).toBe(true);
@@ -203,7 +203,7 @@ describe('Object array tests', () => {
         { key: 2, title: 'abda', meta: 'title - abda' },
       ];
 
-      const trie = new Trie(words1, isCaseSensitive, o => o.title);
+      const trie = new Trie(words1, isCaseInsensitive, o => o.title);
 
       expect(trie.has('a', false)).toBe(true);
       expect(trie.has('A', false)).toBe(true);
@@ -230,7 +230,7 @@ describe('Object array tests', () => {
     });
 
     test('Add new objects and confirm that it exists', () => {
-      const trie = new Trie([], isCaseSensitive, o => o.title);
+      const trie = new Trie([], isCaseInsensitive, o => o.title);
 
       trie.add({ key: 1, title: 'abc', meta: 'title - abc' });
       trie.add({ key: 2, title: 'abd', meta: 'title - abd' });
@@ -251,7 +251,7 @@ describe('Object array tests', () => {
         { key: 2, title: 'abce', meta: 'title - abce' },
       ];
 
-      const trie = new Trie(words1, isCaseSensitive,o => o.title);
+      const trie = new Trie(words1, isCaseInsensitive, o => o.title);
 
       // As the case is "in"-sensitive, removing capitalized word should work too.
       trie.remove('ABCD');
@@ -272,7 +272,7 @@ describe('Object array tests', () => {
     });
 
     test('Check if trie is empty or not', () => {
-      const trie = new Trie([], isCaseSensitive, o => o.title);
+      const trie = new Trie([], isCaseInsensitive, o => o.title);
       expect(trie.isEmpty()).toBe(true);
 
       trie.add({ key: 1, title: 'abcd', meta: 'title - abcd' });
@@ -284,7 +284,7 @@ describe('Object array tests', () => {
   });
 
   describe('Case Sensitive Tests', () => {
-    const isCaseSensitive = true;
+    const isCaseInsensitive = false;
 
     test('Trie has an exact search term', () => {
       const words1 = [
@@ -292,7 +292,7 @@ describe('Object array tests', () => {
         { key: 2, title: 'aBd', meta: 'title - aBd' },
       ];
 
-      const trie = new Trie(words1, isCaseSensitive, o => o.title);
+      const trie = new Trie(words1, isCaseInsensitive, o => o.title);
       expect(trie.has('AbC')).toBe(true);
       expect(trie.has('abc')).toBe(false);
       expect(trie.has('aBd')).toBe(true);
@@ -308,14 +308,14 @@ describe('Object array tests', () => {
         { key: 2, title: 'abda', meta: 'title - abda' },
       ];
 
-      const trie = new Trie(words1, isCaseSensitive, o => o.title);
+      const trie = new Trie(words1, isCaseInsensitive, o => o.title);
       expect(trie.has('a', false)).toBe(true);
       expect(trie.has('d', false)).toBe(false);
       expect(trie.has('', false)).toBe(false);
     });
 
     test('Add new objects and confirm that it exists', () => {
-      const trie = new Trie([], isCaseSensitive, o => o.title);
+      const trie = new Trie([], isCaseInsensitive, o => o.title);
 
       trie.add({ key: 1, title: 'abc', meta: 'title - abc' });
       trie.add({ key: 2, title: 'abd', meta: 'title - abd' });
@@ -336,7 +336,7 @@ describe('Object array tests', () => {
         { key: 2, title: 'abce', meta: 'title - abce' },
       ];
 
-      const trie = new Trie(words1, isCaseSensitive, o => o.title);
+      const trie = new Trie(words1, isCaseInsensitive, o => o.title);
 
       trie.remove('abcd');
       expect(trie.has('abcd')).toBe(false);
@@ -356,7 +356,7 @@ describe('Object array tests', () => {
     });
 
     test('Check if trie is empty or not', () => {
-      const trie = new Trie([], isCaseSensitive, o => o.title);
+      const trie = new Trie([], isCaseInsensitive, o => o.title);
       expect(trie.isEmpty()).toBe(true);
 
       trie.add({ key: 999, title: 'ab' });
@@ -370,21 +370,18 @@ describe('Object array tests', () => {
 
 describe('String array tests', () => {
   describe('Typeahead', () => {
-    const isCaseSensitive = false;
+    const isCaseInsensitive = true;
 
     test('return an empty array when not found', () => {
       const words = ['a1234', 'def'];
-      const trie = new Trie(words, isCaseSensitive);
+      const trie = new Trie(words, isCaseInsensitive);
 
       const result = trie.search('xyz');
-      // console.log(`trie`, JSON.stringify(trie, null, 2));
-      // console.log(`result ===> `, result);
-
       expect(result).toEqual([]);
     });
 
     test('cannot find a removed record', () => {
-      const trie = new Trie(['abc', 'def'], isCaseSensitive);
+      const trie = new Trie(['abc', 'def'], isCaseInsensitive);
       expect(trie.search('abc')).toEqual(['abc']);
       expect(trie.search('def')).toEqual(['def']);
 
@@ -396,7 +393,7 @@ describe('String array tests', () => {
     });
 
     test('can find a newly added record', () => {
-      const trie = new Trie(['abc'], isCaseSensitive);
+      const trie = new Trie(['abc'], isCaseInsensitive);
       expect(trie.search('abc')).toEqual(['abc']);
       expect(trie.search('xyz')).toEqual([]);
 
@@ -412,7 +409,7 @@ describe('String array tests', () => {
     test('Happy Path', () => {
       // prettier-ignore
       const words = ['a', 'dog', 'cat', 'hel', 'hell', 'hello', 'help', 'helping', 'helps'];
-      const trie = new Trie(words, isCaseSensitive);
+      const trie = new Trie(words, isCaseInsensitive);
 
       const result = trie.search('hel');
       const expected = ['hel', 'hell', 'hello', 'help', 'helping', 'helps'];
@@ -420,7 +417,7 @@ describe('String array tests', () => {
       expect(result).toEqual(expected.sort());
 
       const words2 = ['abcd', 'abce', 'ABC', 'THE', 'their', 'there'];
-      const trie2 = new Trie(words2, isCaseSensitive);
+      const trie2 = new Trie(words2, isCaseInsensitive);
 
       expect(trie2.search('a')).toEqual(['abcd', 'abce', 'ABC'].sort());
       expect(trie2.search('ab')).toEqual(['abcd', 'abce', 'ABC'].sort());
@@ -438,10 +435,10 @@ describe('String array tests', () => {
   });
 
   describe('Case Insensitive Tests', () => {
-    const isCaseSensitive = false;
+    const isCaseInsensitive = true;
 
     test('Trie has an exact search term', () => {
-      const trie = new Trie(['AbC', 'aBd'], isCaseSensitive);
+      const trie = new Trie(['AbC', 'aBd'], isCaseInsensitive);
 
       expect(trie.has('aBc')).toBe(true);
       expect(trie.has('aBC')).toBe(true);
@@ -458,7 +455,7 @@ describe('String array tests', () => {
       expect(trie.has('')).toBe(false);
 
       const words = ['abcd', 'abce', 'ABC', 'THE', 'their', 'there'];
-      const trie2 = new Trie(words, isCaseSensitive);
+      const trie2 = new Trie(words, isCaseInsensitive);
       expect(trie2.has('ABCD')).toBe(true);
       expect(trie2.has('ABCE')).toBe(true);
       expect(trie2.has('abc')).toBe(true);
@@ -468,7 +465,7 @@ describe('String array tests', () => {
     });
 
     test('Trie has a fuzz search term', () => {
-      const trie = new Trie(['abcd', 'abda'], isCaseSensitive);
+      const trie = new Trie(['abcd', 'abda'], isCaseInsensitive);
       expect(trie.has('a', false)).toBe(true);
       expect(trie.has('A', false)).toBe(true);
       expect(trie.has('ab', false)).toBe(true);
@@ -494,7 +491,7 @@ describe('String array tests', () => {
     });
 
     test('Add new terms and confirm that it exists', () => {
-      const trie = new Trie([], isCaseSensitive);
+      const trie = new Trie([], isCaseInsensitive);
       trie.add('abc');
       trie.add('abd');
 
@@ -509,12 +506,12 @@ describe('String array tests', () => {
     });
 
     test('Trying to delete from an empty trie should not fail', () => {
-      const trie = new Trie([], isCaseSensitive);
+      const trie = new Trie([], isCaseInsensitive);
       expect(() => trie.remove('aaa')).not.toThrow();
     });
 
     test('Remove terms and confirm that it does not exist', () => {
-      const trie = new Trie(['abcd', 'abce'], isCaseSensitive);
+      const trie = new Trie(['abcd', 'abce'], isCaseInsensitive);
       // As the case is "in"-sensitive, removing capitalized word should work too.
       trie.remove('ABCD');
       expect(trie.has('abcd')).toBe(false);
@@ -534,7 +531,7 @@ describe('String array tests', () => {
     });
 
     test('Check if trie is empty or not', () => {
-      const trie = new Trie([], isCaseSensitive);
+      const trie = new Trie([], isCaseInsensitive);
       expect(trie.isEmpty()).toBe(true);
 
       trie.add('ab');
@@ -546,10 +543,10 @@ describe('String array tests', () => {
   });
 
   describe('Case Sensitive Tests', () => {
-    const isCaseSensitive = true;
+    const isCaseInsensitive = true;
 
     test('Trie has an exact search term', () => {
-      const trie = new Trie(['abc', 'abd'], isCaseSensitive);
+      const trie = new Trie(['abc', 'abd'], isCaseInsensitive);
       expect(trie.has('abc')).toBe(true);
       expect(trie.has('abd')).toBe(true);
       expect(trie.has('abx')).toBe(false);
@@ -558,14 +555,14 @@ describe('String array tests', () => {
     });
 
     test('Trie has a fuzz search term', () => {
-      const trie = new Trie(['abcd', 'abda'], isCaseSensitive);
+      const trie = new Trie(['abcd', 'abda'], isCaseInsensitive);
       expect(trie.has('a', false)).toBe(true);
       expect(trie.has('d', false)).toBe(false);
       expect(trie.has('', false)).toBe(false);
     });
 
     test('Add new terms and confirm that it exists', () => {
-      const trie = new Trie([], isCaseSensitive);
+      const trie = new Trie([], isCaseInsensitive);
       trie.add('abc');
       trie.add('abd');
 
@@ -580,12 +577,12 @@ describe('String array tests', () => {
     });
 
     test('Trying to delete from an empty trie should not fail', () => {
-      const trie = new Trie([], isCaseSensitive);
+      const trie = new Trie([], isCaseInsensitive);
       expect(() => trie.remove('aaa')).not.toThrow();
     });
 
     test('Remove terms and confirm that it does not exist', () => {
-      const trie = new Trie(['abcd', 'abce'], isCaseSensitive);
+      const trie = new Trie(['abcd', 'abce'], isCaseInsensitive);
       trie.remove('abcd');
       expect(trie.has('abcd')).toBe(false);
       expect(trie.has('a', false)).toBe(true);
@@ -604,7 +601,7 @@ describe('String array tests', () => {
     });
 
     test('Check if trie is empty or not', () => {
-      const trie = new Trie([], isCaseSensitive);
+      const trie = new Trie([], isCaseInsensitive);
       expect(trie.isEmpty()).toBe(true);
 
       trie.add('ab');
