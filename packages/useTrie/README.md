@@ -81,9 +81,9 @@ When you add/remove an item in the trie, a new instance of trie is returned,
 so you can monitor on the `trie` dep when searching for a word.
 
 ```js
-  const getMatches = React.useCallback(() => {
-    return trie.search(state.term).map(word => <li key={word}>{word}</li>);
-  }, [trie]);
+const getMatches = React.useCallback(() => {
+  return trie.search(state.term).map(word => <li key={word}>{word}</li>);
+}, [trie]);
 ```
 
 # Demo
@@ -297,27 +297,34 @@ useTrie(
 /*
   Public types
 */
-type Word = string | object;
-type Words = Word[];
-
-class Node {
-  character: string;
-  id: number | string | undefined;
-  children: ChildrenType;
-  constructor(character?: string);
+declare type Word = string | object;
+declare type Words = Word[];
+interface ITrie {
+  has: (word: string, exactSearch?: boolean) => boolean;
+  add: (word: Word, getText?: (obj: any) => string) => void;
+  remove: (word: string) => void;
+  isEmpty: () => boolean;
+  search: (word: string) => Words;
 }
-class Trie {
+declare class Trie implements ITrie {
   constructor(
-    words: Words,
+    words?: Words,
     isCaseSensitive?: boolean,
     getText?: (obj: any) => string
   );
   has: (wordToSearch: string, exactSearch?: boolean) => boolean;
-  add: (wordToAdd: Word) => void;
+  add: (wordToAdd: Word, getText?: (obj: any) => string) => void;
   remove: (wordToRemove: string) => void;
-  isEmpty: (root?: Node) => boolean;
-  search: (wordToSearch: string) => string[];
+  isEmpty: () => boolean;
+  search: (wordToSearch: string) => Word[];
 }
+declare function useTrie(
+  initialWords: Words,
+  isCaseSensitive?: boolean,
+  getText?: (obj: any) => string
+): ITrie;
+export { ITrie, Trie, Word, Words };
+export default useTrie;
 ```
 
 ## Trie
@@ -335,6 +342,5 @@ class Trie {
   - Add the `word` to trie
 - `remove = (word: string): void`
   - Remove the `word` from trie
-- `isEmpty = (node: TrieNode = this.root): boolean`
-  - Check if the current trie is empty or not.
-  - Optionally check if the trie node is empty or not
+- `isEmpty = (): boolean`
+  - Check if the current trie contains any words in it or not

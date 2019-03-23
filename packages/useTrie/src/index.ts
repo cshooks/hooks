@@ -19,7 +19,7 @@ interface ITrie {
   has: (word: string, exactSearch?: boolean) => boolean;
   add: (word: Word, getText?: (obj: any) => string) => void;
   remove: (word: string) => void;
-  isEmpty: (root?: Node) => boolean;
+  isEmpty: () => boolean;
   search: (word: string) => Words;
 }
 
@@ -104,7 +104,7 @@ class Trie implements ITrie {
     if (!node) return new Node();
 
     if (depth === word.length) {
-      if (this.isEmpty(node)) {
+      if (this._isEmpty(node)) {
         return new Node();
       } else {
         delete node.id;
@@ -114,7 +114,7 @@ class Trie implements ITrie {
 
     const c = word[depth];
     node.next[c] = this.removeChildren(node.next[c], word, depth + 1);
-    if (this.isEmpty(node.next[c]) && !node.next[c].id) {
+    if (this._isEmpty(node.next[c]) && !node.next[c].id) {
       delete node.next[c];
       return node;
     }
@@ -122,8 +122,11 @@ class Trie implements ITrie {
     return node;
   }
 
-  public isEmpty = (root: Node = this.root): boolean => {
+  private _isEmpty = (root: Node = this.root): boolean => {
     return Object.keys(root.next).length === 0;
+  };
+  public isEmpty = (): boolean => {
+    return this._isEmpty(this.root);
   };
 
   private isLastNode = (node: Node): boolean =>
