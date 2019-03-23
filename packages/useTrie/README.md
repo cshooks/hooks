@@ -357,6 +357,7 @@ export default useTrie;
   - Check if the `word` exists in the trie
   - `word` - a word to search in trie
   - `exactSearch` - match the `word` exactly else does a fuzzy match
+    - e.g.) If trie contains `['abc', 'xyz', 'zte']`, then `has('a')` returns true as `a` matches the prefix of `abc`.
 - `add: (wordToAdd: Word, getText?: (obj: any) => string) => void;`
   - Add the `word` to trie
   - If the `wordToAdd` is an object and not specified in the `useTrie`, then pass the `getText` callback to let `trie` know how to extract the text from the object.
