@@ -29,7 +29,6 @@ class Trie implements ITrie {
   constructor(
     words: Words = [],
     private isCaseSensitive: boolean = true,
-    private getId: (obj: any) => string | number = obj => obj,
     private getText: (obj: any) => string = obj => obj
   ) {
     this.root = new Node('');
@@ -38,7 +37,7 @@ class Trie implements ITrie {
   }
 
   private buildTrie(words: Words): void {
-    words.forEach(word => this.add(word, this.getId, this.getText));
+    words.forEach(word => this.add(word, this.getText));
   }
 
   private normalizeWord = (word: Word) =>
@@ -74,10 +73,8 @@ class Trie implements ITrie {
 
   public add = (
     wordToAdd: Word,
-    getId: (obj: any) => string | number = obj => obj,
     getText: (obj: any) => string = obj => obj
   ): void => {
-    this.getId = this.getId || getId;
     this.getText = this.getText || getText;
 
     let word = this.normalizeWord(wordToAdd);
@@ -219,10 +216,9 @@ function reducer(state: ReducerState, action: TrieAction): ReducerState {
 function useTrie(
   initialWords: Words,
   isCaseSensitive = true,
-  getId: (obj: any) => string | number = obj => obj,
   getText: (obj: any) => string = obj => obj
 ): TrieHook {
-  const trie = new Trie(initialWords, isCaseSensitive, getId, getText);
+  const trie = new Trie(initialWords, isCaseSensitive, getText);
   const [state, dispatch] = React.useReducer(reducer, { trie, word: '' });
 
   function add(word: Word): void {
