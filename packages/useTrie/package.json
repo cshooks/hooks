@@ -1,6 +1,6 @@
 {
   "name": "@cshooks/usetrie",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React Hooks for using a Trie data structure",
   "author": "dance2die <sungmkim80@gmail.com>",
   "homepage": "https://github.com/cshooks/hooks",
