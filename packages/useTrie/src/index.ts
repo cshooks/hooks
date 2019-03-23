@@ -97,10 +97,10 @@ class Trie implements ITrie {
     let word = this.normalizeWord(wordToRemove);
     if (this.isEmpty() || !this.has(word)) return;
 
-    this.root = this.removeChildren(this.root, word);
+    this.root = this._remove(this.root, word);
   };
 
-  private removeChildren(node: Node, word: string, depth: number = 0): Node {
+  private _remove(node: Node, word: string, depth: number = 0): Node {
     if (!node) return new Node();
 
     if (depth === word.length) {
@@ -113,7 +113,7 @@ class Trie implements ITrie {
     }
 
     const c = word[depth];
-    node.next[c] = this.removeChildren(node.next[c], word, depth + 1);
+    node.next[c] = this._remove(node.next[c], word, depth + 1);
     if (this._isEmpty(node.next[c]) && !node.next[c].id) {
       delete node.next[c];
       return node;
