@@ -1,5 +1,5 @@
 # cshooks
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 [![Known Vulnerabilities](https://snyk.io/test/github/cshooks/hooks/badge.svg?targetFile=package.json)](https://snyk.io/test/github/cshooks/hooks?targetFile=package.json)
 
 A collection of React Hooks using Computer Science (CS) data structures & algorithms.
@@ -22,8 +22,8 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/all-contri
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-| [<img src="https://avatars1.githubusercontent.com/u/8465237?v=4" width="100px;" alt="Sung M. Kim"/><br /><sub><b>Sung M. Kim</b></sub>](https://twitter.com/dance2die)<br />[🚇](#infra-dance2die "Infrastructure (Hosting, Build-Tools, etc)") [🔧](#tool-dance2die "Tools") [⚠️](https://github.com/cshooks/hooks/commits?author=dance2die "Tests") [📖](https://github.com/cshooks/hooks/commits?author=dance2die "Documentation") [🤔](#ideas-dance2die "Ideas, Planning, & Feedback") [💻](https://github.com/cshooks/hooks/commits?author=dance2die "Code") |
-| :---: |
+<table><tr><td align="center"><a href="https://twitter.com/dance2die"><img src="https://avatars1.githubusercontent.com/u/8465237?v=4" width="100px;" alt="Sung M. Kim"/><br /><sub><b>Sung M. Kim</b></sub></a><br /><a href="#infra-dance2die" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#tool-dance2die" title="Tools">🔧</a> <a href="https://github.com/cshooks/hooks/commits?author=dance2die" title="Tests">⚠️</a> <a href="https://github.com/cshooks/hooks/commits?author=dance2die" title="Documentation">📖</a> <a href="#ideas-dance2die" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/cshooks/hooks/commits?author=dance2die" title="Code">💻</a></td><td align="center"><a href="https://iamdeveloper.com"><img src="https://avatars2.githubusercontent.com/u/833231?v=4" width="100px;" alt="Nick Taylor"/><br /><sub><b>Nick Taylor</b></sub></a><br /><a href="#review-nickytonline" title="Reviewed Pull Requests">👀</a></td></tr></table>
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

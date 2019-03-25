@@ -22,6 +22,15 @@
         "ideas",
         "code"
       ]
+    },
+    {
+      "login": "nickytonline",
+      "name": "Nick Taylor",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/833231?v=4",
+      "profile": "https://iamdeveloper.com",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7
