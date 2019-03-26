@@ -2,9 +2,7 @@ import * as React from 'react';
 
 // https://dev.to/nickytonline/comment/9j7l
 type Children = Record<string, Node>;
-
 type Word = string | object;
-type Words = Word[];
 
 // https://www.geeksforgeeks.org/trie-insert-and-search/
 class Node {
@@ -19,14 +17,14 @@ interface ITrie {
   add: (word: Word, getText?: (obj: any) => string) => void;
   remove: (word: string) => void;
   isEmpty: () => boolean;
-  search: (word: string) => Words;
+  search: (word: string) => Word[];
 }
 
 class Trie implements ITrie {
   private root: Node;
 
   constructor(
-    words: Words = [],
+    words: Word[] = [],
     private isCaseInsensitive: boolean = true,
     private getText: (obj: any) => string = obj => obj
   ) {
@@ -35,7 +33,7 @@ class Trie implements ITrie {
     this.buildTrie(words);
   }
 
-  private buildTrie(words: Words): void {
+  private buildTrie(words: Word[]): void {
     words.forEach(word => this.add(word, this.getText));
   }
 
@@ -142,11 +140,11 @@ class Trie implements ITrie {
   }
 
   // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
-  public search = (wordToSearch: string): Words => {
+  public search = (wordToSearch: string): Word[] => {
     const word = this.normalizeWord(wordToSearch);
     const children = this.traverseToChildren(this.root, word, 0);
 
-    const acc: Words = [];
+    const acc: Word[] = [];
     // initially prefix === '' because the we are passing a tree with one root.
     // the Root contains the last letter in the search term
     this.searchChildren(children, '', word, word.length, acc);
@@ -158,8 +156,8 @@ class Trie implements ITrie {
     prefix: string,
     word: string,
     totalDepth: number,
-    acc: Words
-  ): Words {
+    acc: Word[]
+  ): Word[] {
     if (!!root.id) acc.push(root.id);
     if (this.isLastNode(root)) return [];
 
@@ -168,7 +166,7 @@ class Trie implements ITrie {
         ...words,
         ...this.searchChildren(root.next[c], prefix + c, word, totalDepth, acc),
       ],
-      [] as Words
+      [] as Word[]
     );
 
     return acc;
@@ -208,7 +206,7 @@ function reducer(state: ReducerState, action: TrieAction): ReducerState {
  * @param getText: (obj: any) => string returns a text from an object to be added
  */
 function useTrie(
-  initialWords: Words,
+  initialWords: Word[],
   isCaseInsensitive = true,
   getText: (obj: any) => string = obj => obj
 ): ITrie {
@@ -226,5 +224,5 @@ function useTrie(
   return { ...state.trie, add, remove };
 }
 
-export { ITrie, Trie, Word, Words };
+export { ITrie, Trie, Word };
 export default useTrie;
