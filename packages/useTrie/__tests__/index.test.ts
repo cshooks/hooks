@@ -15,12 +15,12 @@ describe('useTrie Hook tests', () => {
     act(() => {
       trieHook.add('abc');
     });
-    expect(trieHook !== result.current).toBe(true);
+    expect(trieHook).not.toBe(result.current);
 
     act(() => {
       trieHook.remove('abc');
     });
-    expect(trieHook !== result.current).toBe(true);
+    expect(trieHook).not.toBe(result.current);
   });
 });
 
@@ -95,19 +95,15 @@ describe('Object array tests', () => {
       trie.add({ id: 5, meta: '5 - hell', text: 'hell' }, o => o.text);
       trie.add({ id: 6, meta: '6 - hello', text: 'hello' });
 
-      expect(trie.search('hel')).toEqual(
-        [
-          { id: 4, meta: '4 - hel', text: 'hel' },
-          { id: 5, meta: '5 - hell', text: 'hell' },
-          { id: 6, meta: '6 - hello', text: 'hello' },
-        ].sort()
-      );
-      expect(trie.search('hell')).toEqual(
-        [
-          { id: 5, meta: '5 - hell', text: 'hell' },
-          { id: 6, meta: '6 - hello', text: 'hello' },
-        ].sort()
-      );
+      expect(trie.search('hel')).toEqual([
+        { id: 4, meta: '4 - hel', text: 'hel' },
+        { id: 5, meta: '5 - hell', text: 'hell' },
+        { id: 6, meta: '6 - hello', text: 'hello' },
+      ]);
+      expect(trie.search('hell')).toEqual([
+        { id: 5, meta: '5 - hell', text: 'hell' },
+        { id: 6, meta: '6 - hello', text: 'hello' },
+      ]);
       expect(trie.search('hello')).toEqual([
         { id: 6, meta: '6 - hello', text: 'hello' },
       ]);
@@ -123,7 +119,7 @@ describe('Object array tests', () => {
         { id: 5, text: 'their', meta: '5 - their' },
         { id: 6, text: 'there', meta: '6 - there' },
       ];
-      
+
       const textSelector = (row: any) => row.text;
       const trie2 = new Trie(words2, isCaseInsensitive, textSelector);
 
@@ -135,15 +131,15 @@ describe('Object array tests', () => {
       expect(trie2.search('a')).toEqual(expectedForA);
       expect(trie2.search('ab')).toEqual(expectedForA);
       expect(trie2.search('abc')).toEqual(expectedForA);
-      
+
       expect(trie2.search('abcd')).toEqual([{ id: 1, text: 'abcd', meta: '1 - abcd' }]);
       expect(trie2.search('abce')).toEqual([{ id: 2, text: 'abce', meta: '2 - abce' }]);
-      
+
       const expectedForT = [
         { id: 4, text: 'THE', meta: '4 - THE' },
         { id: 5, text: 'their', meta: '5 - their' },
         { id: 6, text: 'there', meta: '6 - there' },
-      ].sort();
+      ];
       expect(trie2.search('t')).toEqual(expectedForT);
       expect(trie2.search('th')).toEqual(expectedForT);
       expect(trie2.search('the')).toEqual(expectedForT);
@@ -165,17 +161,20 @@ describe('Object array tests', () => {
 
       const trie = new Trie(words1, isCaseInsensitive, o => o.title);
 
-      expect(trie.has('aBc')).toBe(true);
-      expect(trie.has('aBC')).toBe(true);
-      expect(trie.has('ABC')).toBe(true);
-      expect(trie.has('abc')).toBe(true);
-      expect(trie.has('AbC')).toBe(true);
-
-      expect(trie.has('AbD')).toBe(true);
-      expect(trie.has('aBD')).toBe(true);
-      expect(trie.has('ABD')).toBe(true);
-      expect(trie.has('abd')).toBe(true);
-      expect(trie.has('aBd')).toBe(true);
+      [
+        'aBc',
+        'aBC',
+        'ABC',
+        'abc',
+        'AbC',
+        'AbD',
+        'aBD',
+        'ABD',
+        'abd',
+        'aBd',
+      ].forEach(word => {
+        expect(trie.has(word)).toBe(true);
+      });
 
       expect(trie.has('')).toBe(false);
 
@@ -189,12 +188,10 @@ describe('Object array tests', () => {
       ];
 
       const trie2 = new Trie(words2, isCaseInsensitive, o => o.body);
-      expect(trie2.has('ABCD')).toBe(true);
-      expect(trie2.has('ABCE')).toBe(true);
-      expect(trie2.has('abc')).toBe(true);
-      expect(trie2.has('the')).toBe(true);
-      expect(trie2.has('THEIR')).toBe(true);
-      expect(trie2.has('THERE')).toBe(true);
+
+      ['ABCD', 'ABCD', 'ABCE', 'abc', 'the', 'THEIR', 'THERE'].forEach(word => {
+        expect(trie2.has(word)).toBe(true);
+      });
     });
 
     test('Trie has a fuzz search term', () => {
@@ -205,28 +202,27 @@ describe('Object array tests', () => {
 
       const trie = new Trie(words1, isCaseInsensitive, o => o.title);
 
-      expect(trie.has('a', false)).toBe(true);
-      expect(trie.has('A', false)).toBe(true);
-      expect(trie.has('ab', false)).toBe(true);
-      expect(trie.has('aB', false)).toBe(true);
-      expect(trie.has('abc', false)).toBe(true);
-      expect(trie.has('aBc', false)).toBe(true);
-      expect(trie.has('aBC', false)).toBe(true);
-      expect(trie.has('ABC', false)).toBe(true);
-      expect(trie.has('abcd', false)).toBe(true);
-      expect(trie.has('Abcd', false)).toBe(true);
-      expect(trie.has('ABcd', false)).toBe(true);
-      expect(trie.has('ABCd', false)).toBe(true);
-      expect(trie.has('ABCD', false)).toBe(true);
+      [
+        'a',
+        'A',
+        'ab',
+        'aB',
+        'abc',
+        'aBc',
+        'aBC',
+        'ABC',
+        'abcd',
+        'Abcd',
+        'ABcd',
+        'ABCd',
+        'ABCD',
+      ].forEach(word => {
+        expect(trie.has(word, false)).toBe(true);
+      });
 
-      expect(trie.has('ay', false)).toBe(false);
-      expect(trie.has('aby', false)).toBe(false);
-      expect(trie.has('abcy', false)).toBe(false);
-      expect(trie.has('abcy', false)).toBe(false);
-      expect(trie.has('b', false)).toBe(false);
-      expect(trie.has('c', false)).toBe(false);
-      expect(trie.has('d', false)).toBe(false);
-      expect(trie.has('', false)).toBe(false);
+      ['ay', 'aby', 'abcy', 'abcy', 'b', 'c', 'd', ''].forEach(word => {
+        expect(trie.has(word, false)).toBe(false);
+      });
     });
 
     test('Add new objects and confirm that it exists', () => {
@@ -440,54 +436,55 @@ describe('String array tests', () => {
     test('Trie has an exact search term', () => {
       const trie = new Trie(['AbC', 'aBd'], isCaseInsensitive);
 
-      expect(trie.has('aBc')).toBe(true);
-      expect(trie.has('aBC')).toBe(true);
-      expect(trie.has('ABC')).toBe(true);
-      expect(trie.has('abc')).toBe(true);
-      expect(trie.has('AbC')).toBe(true);
-
-      expect(trie.has('AbD')).toBe(true);
-      expect(trie.has('aBD')).toBe(true);
-      expect(trie.has('ABD')).toBe(true);
-      expect(trie.has('abd')).toBe(true);
-      expect(trie.has('aBd')).toBe(true);
+      [
+        'aBc',
+        'aBC',
+        'ABC',
+        'abc',
+        'AbC',
+        'AbD',
+        'aBD',
+        'ABD',
+        'abd',
+        'aBd',
+      ].forEach(word => {
+        expect(trie.has(word)).toBe(true);
+      });
 
       expect(trie.has('')).toBe(false);
 
       const words = ['abcd', 'abce', 'ABC', 'THE', 'their', 'there'];
       const trie2 = new Trie(words, isCaseInsensitive);
-      expect(trie2.has('ABCD')).toBe(true);
-      expect(trie2.has('ABCE')).toBe(true);
-      expect(trie2.has('abc')).toBe(true);
-      expect(trie2.has('the')).toBe(true);
-      expect(trie2.has('THEIR')).toBe(true);
-      expect(trie2.has('THERE')).toBe(true);
+
+      ['ABCD', 'ABCE', 'abc', 'the', 'THEIR', 'THERE'].forEach(word => {
+        expect(trie2.has(word)).toBe(true);
+      });
     });
 
     test('Trie has a fuzz search term', () => {
       const trie = new Trie(['abcd', 'abda'], isCaseInsensitive);
-      expect(trie.has('a', false)).toBe(true);
-      expect(trie.has('A', false)).toBe(true);
-      expect(trie.has('ab', false)).toBe(true);
-      expect(trie.has('aB', false)).toBe(true);
-      expect(trie.has('abc', false)).toBe(true);
-      expect(trie.has('aBc', false)).toBe(true);
-      expect(trie.has('aBC', false)).toBe(true);
-      expect(trie.has('ABC', false)).toBe(true);
-      expect(trie.has('abcd', false)).toBe(true);
-      expect(trie.has('Abcd', false)).toBe(true);
-      expect(trie.has('ABcd', false)).toBe(true);
-      expect(trie.has('ABCd', false)).toBe(true);
-      expect(trie.has('ABCD', false)).toBe(true);
 
-      expect(trie.has('ay', false)).toBe(false);
-      expect(trie.has('aby', false)).toBe(false);
-      expect(trie.has('abcy', false)).toBe(false);
-      expect(trie.has('abcy', false)).toBe(false);
-      expect(trie.has('b', false)).toBe(false);
-      expect(trie.has('c', false)).toBe(false);
-      expect(trie.has('d', false)).toBe(false);
-      expect(trie.has('', false)).toBe(false);
+      [
+        'a',
+        'A',
+        'ab',
+        'aB',
+        'abc',
+        'aBc',
+        'aBC',
+        'ABC',
+        'abcd',
+        'Abcd',
+        'ABcd',
+        'ABCd',
+        'ABCD',
+      ].forEach(word => {
+        expect(trie.has(word, false)).toBe(true);
+      });
+
+      ['ay', 'aby', 'abcy', 'abcy', 'b', 'c', 'd', ''].forEach(word => {
+        expect(trie.has(word, false)).toBe(false);
+      });
     });
 
     test('Add new terms and confirm that it exists', () => {

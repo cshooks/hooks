@@ -22,8 +22,10 @@ interface ITrie {
 type TrieActionType = 'ADD' | 'REMOVE';
 interface TrieAction {
   type: TrieActionType;
-  word: Word;
-  trie: ITrie;
+  payload: {
+    word: Word;
+    trie: ITrie;
+  };
 }
 
 type ReducerState = {
@@ -43,7 +45,7 @@ class Trie implements ITrie {
 
   constructor(
     words: Word[] = [],
-    private isCaseInsensitive: boolean = true,
+    private isCaseInsensitive = true,
     private getText: TextSelector = obj => obj
   ) {
     this.root = new TrieNode('');
@@ -55,8 +57,8 @@ class Trie implements ITrie {
     words.forEach(word => this.add(word, this.getText));
   }
 
-  private normalizeWord = (word: Word) =>
-    this.isCaseInsensitive
+  private normalizeWord(word: Word): string {
+    return this.isCaseInsensitive
       ? (typeof word === 'string'
           ? word
           : this.getText(word) || ''
@@ -64,12 +66,13 @@ class Trie implements ITrie {
       : typeof word === 'string'
       ? word
       : this.getText(word);
+  }
 
   /*
    * @param {string} word A word to check if it exists in the trie
    * @param {boolean} exactSearch Return true only if the exact word is stored
    */
-  has = (wordToSearch: string, exactSearch: boolean = true): boolean => {
+  has(wordToSearch: string, exactSearch: boolean = true): boolean {
     let word = this.normalizeWord(wordToSearch);
     if (word === '') return false;
 
@@ -84,9 +87,9 @@ class Trie implements ITrie {
 
     // If "id" at the current node exists, then it's a word
     return exactSearch ? !!head.id : true;
-  };
+  }
 
-  add = (wordToAdd: Word, getText: TextSelector = obj => obj): void => {
+  add(wordToAdd: Word, getText: TextSelector = obj => obj): void {
     this.getText = this.getText || getText;
 
     let word = this.normalizeWord(wordToAdd);
@@ -102,17 +105,17 @@ class Trie implements ITrie {
     }
 
     head.id = wordToAdd;
-  };
+  }
 
   // https://www.geeksforgeeks.org/trie-delete/
-  remove = (wordToRemove: string): void => {
+  remove(wordToRemove: string): void {
     let word = this.normalizeWord(wordToRemove);
     if (this.isEmpty() || !this.has(word)) return;
 
     this.root = this._remove(this.root, word);
-  };
+  }
 
-  private _remove(node: ITrieNode, word: string, depth: number = 0): ITrieNode {
+  private _remove(node: ITrieNode, word: string, depth = 0): ITrieNode {
     if (!node) return new TrieNode();
 
     if (depth === word.length) {
@@ -134,15 +137,16 @@ class Trie implements ITrie {
     return node;
   }
 
-  private _isEmpty = (root: ITrieNode = this.root): boolean => {
+  private _isEmpty(root: ITrieNode = this.root): boolean {
     return Object.keys(root.next).length === 0;
-  };
+  }
   isEmpty = (): boolean => {
     return this._isEmpty(this.root);
   };
 
-  private isLastNode = (node: ITrieNode): boolean =>
-    Object.keys(node.next).length === 0;
+  private isLastNode(node: ITrieNode): boolean {
+    return Object.keys(node.next).length === 0;
+  }
 
   private traverseToChildren(
     node: ITrieNode,
@@ -159,7 +163,7 @@ class Trie implements ITrie {
   }
 
   // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
-  search = (wordToSearch: string): Word[] => {
+  search(wordToSearch: string): Word[] {
     const word = this.normalizeWord(wordToSearch);
     const children = this.traverseToChildren(this.root, word, 0);
 
@@ -168,7 +172,7 @@ class Trie implements ITrie {
     // the Root contains the last letter in the search term
     this.searchChildren(children, '', word, word.length, acc);
     return acc;
-  };
+  }
 
   private searchChildren(
     root: ITrieNode,
@@ -195,10 +199,10 @@ class Trie implements ITrie {
 function reducer(state: ReducerState, action: TrieAction): ReducerState {
   switch (action.type) {
     case 'ADD':
-      state.trie.add(action.word);
+      state.trie.add(action.payload.word);
       return { ...state, trie: state.trie };
     case 'REMOVE':
-      state.trie.remove(action.word as string);
+      state.trie.remove(action.payload.word as string);
       return { ...state, trie: state.trie };
     default:
       return state;
@@ -220,11 +224,11 @@ function useTrie(
   const [state, dispatch] = React.useReducer(reducer, { trie, word: '' });
 
   function add(word: Word): void {
-    dispatch({ type: 'ADD', trie, word });
+    dispatch({ type: 'ADD', payload: { trie, word } });
   }
 
   function remove(word: string): void {
-    dispatch({ type: 'REMOVE', trie, word });
+    dispatch({ type: 'REMOVE', payload: { trie, word } });
   }
 
   return { ...state.trie, add, remove };

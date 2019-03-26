@@ -7,9 +7,7 @@
     "noLib": false,
     "jsx": "react",
     "sourceMap": true,
-    "downlevelIteration": true,
-    "types": ["jest", "node", "react", "react-dom"]
+    "downlevelIteration": true
   },
-  "typeRoots": ["./types"],
   "include": ["./src"]
 }
