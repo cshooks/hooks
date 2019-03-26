@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-interface Children {
-  [key: string]: Node;
-}
+// https://dev.to/nickytonline/comment/9j7l
+type Children = Record<string, Node>;
 
 type Word = string | object;
 type Words = Word[];
