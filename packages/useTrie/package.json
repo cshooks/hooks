@@ -12,7 +12,7 @@
     "clean": "rimraf lib",
     "build": " run-s clean build:*",
     "build:src": "tsc",
-    "build:uglify": "uglifyjs lib/index.js lib/types/index.js -o lib/index.js --config-file .uglifyjs.json",
+    "build:uglify": "uglifyjs lib/index.js -o lib/index.js --config-file .uglifyjs.json",
     "prepare": "run-s clean build",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
