@@ -22,8 +22,10 @@ interface ITrie {
 type TrieActionType = 'ADD' | 'REMOVE';
 interface TrieAction {
   type: TrieActionType;
-  word: Word;
-  trie: ITrie;
+  payload: {
+    word: Word;
+    trie: ITrie;
+  };
 }
 
 type ReducerState = {
@@ -195,10 +197,10 @@ class Trie implements ITrie {
 function reducer(state: ReducerState, action: TrieAction): ReducerState {
   switch (action.type) {
     case 'ADD':
-      state.trie.add(action.word);
+      state.trie.add(action.payload.word);
       return { ...state, trie: state.trie };
     case 'REMOVE':
-      state.trie.remove(action.word as string);
+      state.trie.remove(action.payload.word as string);
       return { ...state, trie: state.trie };
     default:
       return state;
@@ -220,11 +222,11 @@ function useTrie(
   const [state, dispatch] = React.useReducer(reducer, { trie, word: '' });
 
   function add(word: Word): void {
-    dispatch({ type: 'ADD', trie, word });
+    dispatch({ type: 'ADD', payload: { trie, word } });
   }
 
   function remove(word: string): void {
-    dispatch({ type: 'REMOVE', trie, word });
+    dispatch({ type: 'REMOVE', payload: { trie, word } });
   }
 
   return { ...state.trie, add, remove };
