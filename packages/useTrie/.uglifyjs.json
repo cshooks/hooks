@@ -8,9 +8,7 @@
     "properties": {}
   },
   "output": {},
-  "sourceMap": {
-    "content": "inline"
-  },
+  "sourceMap": {},
   "nameCache": null,
   "toplevel": false,
   "ie8": false,
