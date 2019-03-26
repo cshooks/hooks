@@ -1,35 +1,22 @@
 import * as React from 'react';
-
-// https://dev.to/nickytonline/comment/9j7l
-type Children = Record<string, Node>;
-type Word = string | object;
-type TextSelector = (obj: any) => string;
-
-// https://www.geeksforgeeks.org/trie-insert-and-search/
-class Node {
-  id: Word | undefined;
-  next: Children = {};
-
-  constructor(public character = '') {}
-}
-
-interface ITrie {
-  has: (word: string, exactSearch?: boolean) => boolean;
-  add: (word: Word, getText?: TextSelector) => void;
-  remove: (word: string) => void;
-  isEmpty: () => boolean;
-  search: (word: string) => Word[];
-}
+import {
+  TrieNode,
+  TextSelector,
+  Word,
+  ITrie,
+  TrieAction,
+  ReducerState,
+} from './types';
 
 class Trie implements ITrie {
-  private root: Node;
+  private root: TrieNode;
 
   constructor(
     words: Word[] = [],
     private isCaseInsensitive: boolean = true,
     private getText: TextSelector = obj => obj
   ) {
-    this.root = new Node('');
+    this.root = new TrieNode('');
     this.isCaseInsensitive = isCaseInsensitive;
     this.buildTrie(words);
   }
@@ -75,11 +62,11 @@ class Trie implements ITrie {
     let word = this.normalizeWord(wordToAdd);
     if (this.has(word)) return;
 
-    let head: Node = this.root;
+    let head: TrieNode = this.root;
     for (let i = 0; i < word.length; i++) {
       const c = word[i];
       if (!head.next[c]) {
-        head.next[c] = new Node(c);
+        head.next[c] = new TrieNode(c);
       }
       head = head.next[c];
     }
@@ -95,12 +82,12 @@ class Trie implements ITrie {
     this.root = this._remove(this.root, word);
   };
 
-  private _remove(node: Node, word: string, depth: number = 0): Node {
-    if (!node) return new Node();
+  private _remove(node: TrieNode, word: string, depth: number = 0): TrieNode {
+    if (!node) return new TrieNode();
 
     if (depth === word.length) {
       if (this._isEmpty(node)) {
-        return new Node();
+        return new TrieNode();
       } else {
         delete node.id;
         return node;
@@ -117,21 +104,25 @@ class Trie implements ITrie {
     return node;
   }
 
-  private _isEmpty = (root: Node = this.root): boolean => {
+  private _isEmpty = (root: TrieNode = this.root): boolean => {
     return Object.keys(root.next).length === 0;
   };
   isEmpty = (): boolean => {
     return this._isEmpty(this.root);
   };
 
-  private isLastNode = (node: Node): boolean =>
+  private isLastNode = (node: TrieNode): boolean =>
     Object.keys(node.next).length === 0;
 
-  private traverseToChildren(node: Node, word: string, depth: number): Node {
+  private traverseToChildren(
+    node: TrieNode,
+    word: string,
+    depth: number
+  ): TrieNode {
     const c = word[depth];
     const exactSearch = false;
 
-    if (!this.has(word, exactSearch)) return new Node();
+    if (!this.has(word, exactSearch)) return new TrieNode();
     if (depth === word.length - 1 && node.next[c]) return node.next[c];
 
     return this.traverseToChildren(node.next[c], word, depth + 1);
@@ -150,7 +141,7 @@ class Trie implements ITrie {
   };
 
   private searchChildren(
-    root: Node,
+    root: TrieNode,
     prefix: string,
     word: string,
     totalDepth: number,
@@ -170,18 +161,6 @@ class Trie implements ITrie {
     return acc;
   }
 }
-
-type TrieActionType = 'ADD' | 'REMOVE';
-interface TrieAction {
-  type: TrieActionType;
-  word: Word;
-  trie: ITrie;
-}
-
-type ReducerState = {
-  trie: Trie;
-  word: string | Word;
-};
 
 function reducer(state: ReducerState, action: TrieAction): ReducerState {
   switch (action.type) {

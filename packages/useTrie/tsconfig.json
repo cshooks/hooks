@@ -10,7 +10,6 @@
     "downlevelIteration": true,
     "types": ["jest", "node", "react", "react-dom"]
   },
-  // "typeRoots": ["node_modules/@types"],
+  // "typeRoots": ["./types"],
   "include": ["./src"]
-  // "exclude": ["node_modules", "!node_modules/@types"]
 }
