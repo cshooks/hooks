@@ -11,7 +11,7 @@ class Node {
   id: Word | undefined;
   next: Children = {};
 
-  constructor(public character: string = '') {}
+  constructor(public character = '') {}
 }
 
 interface ITrie {
