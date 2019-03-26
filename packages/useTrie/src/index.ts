@@ -45,7 +45,7 @@ class Trie implements ITrie {
 
   constructor(
     words: Word[] = [],
-    private isCaseInsensitive: boolean = true,
+    private isCaseInsensitive = true,
     private getText: TextSelector = obj => obj
   ) {
     this.root = new TrieNode('');
