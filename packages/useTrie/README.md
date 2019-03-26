@@ -300,13 +300,13 @@ render(
 
 ```ts
 useTrie(
-  initialWords: Words,
+  initialWords: Word[],
   isCaseInsensitive = true,
   getText?: (obj: any) => string = obj => obj
 ): Trie
 ```
 
-- `initialWords: Words`: An array of string or object to populate the trie with
+- `initialWords: Word[]`: An array of string or object to populate the trie with
 - `isCaseInsensitive: boolean`: Word comparison flag
   - Is "abc" === "ABC"? If `isCaseInsensitive === true`, then false else true
 - `getText?: (obj: any) => string = obj => obj`: "Text" selector when when dealing with an object Array
@@ -316,33 +316,33 @@ useTrie(
 /*
   Public types
 */
+declare type TextSelector = (obj: any) => string;
 declare type Word = string | object;
-declare type Words = Word[];
 interface ITrie {
-  has: (word: string, exactSearch: boolean = true) => boolean;
-  add: (word: Word, getText?: (obj: any) => string) => void;
+  has: (word: string, exactSearch?: boolean) => boolean;
+  add: (word: Word, getText?: TextSelector) => void;
   remove: (word: string) => void;
   isEmpty: () => boolean;
-  search: (word: string) => Words;
+  search: (word: string) => Word[];
 }
 declare class Trie implements ITrie {
   constructor(
-    words: Words = [],
-    private isCaseInsensitive: boolean = true,
-    private getText: (obj: any) => string = obj => obj
+    words?: Word[],
+    isCaseInsensitive?: boolean,
+    getText?: TextSelector
   );
-  has: (wordToSearch: string, exactSearch: boolean = true) => boolean;
-  add: (wordToAdd: Word, getText?: (obj: any) => string) => void;
+  has: (wordToSearch: string, exactSearch?: boolean) => boolean;
+  add: (wordToAdd: Word, getText?: TextSelector) => void;
   remove: (wordToRemove: string) => void;
   isEmpty: () => boolean;
   search: (wordToSearch: string) => Word[];
 }
 declare function useTrie(
-  initialWords: Words,
+  initialWords: Word[],
   isCaseInsensitive?: boolean,
-  getText?: (obj: any) => string
+  getText?: TextSelector
 ): ITrie;
-export { ITrie, Trie, Word, Words };
+export { ITrie, Trie, Word };
 export default useTrie;
 ```
 
