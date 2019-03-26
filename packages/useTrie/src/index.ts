@@ -115,7 +115,7 @@ class Trie implements ITrie {
     this.root = this._remove(this.root, word);
   }
 
-  private _remove(node: ITrieNode, word: string, depth: number = 0): ITrieNode {
+  private _remove(node: ITrieNode, word: string, depth = 0): ITrieNode {
     if (!node) return new TrieNode();
 
     if (depth === word.length) {
