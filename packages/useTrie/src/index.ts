@@ -52,7 +52,7 @@ class Trie implements ITrie {
    * @param {string} word A word to check if it exists in the trie
    * @param {boolean} exactSearch Return true only if the exact word is stored
    */
-  public has = (wordToSearch: string, exactSearch: boolean = true): boolean => {
+  has = (wordToSearch: string, exactSearch: boolean = true): boolean => {
     let word = this.normalizeWord(wordToSearch);
     if (word === '') return false;
 
@@ -69,7 +69,7 @@ class Trie implements ITrie {
     return exactSearch ? !!head.id : true;
   };
 
-  public add = (wordToAdd: Word, getText: TextSelector = obj => obj): void => {
+  add = (wordToAdd: Word, getText: TextSelector = obj => obj): void => {
     this.getText = this.getText || getText;
 
     let word = this.normalizeWord(wordToAdd);
@@ -88,7 +88,7 @@ class Trie implements ITrie {
   };
 
   // https://www.geeksforgeeks.org/trie-delete/
-  public remove = (wordToRemove: string): void => {
+  remove = (wordToRemove: string): void => {
     let word = this.normalizeWord(wordToRemove);
     if (this.isEmpty() || !this.has(word)) return;
 
@@ -120,7 +120,7 @@ class Trie implements ITrie {
   private _isEmpty = (root: Node = this.root): boolean => {
     return Object.keys(root.next).length === 0;
   };
-  public isEmpty = (): boolean => {
+  isEmpty = (): boolean => {
     return this._isEmpty(this.root);
   };
 
@@ -138,7 +138,7 @@ class Trie implements ITrie {
   }
 
   // https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
-  public search = (wordToSearch: string): Word[] => {
+  search = (wordToSearch: string): Word[] => {
     const word = this.normalizeWord(wordToSearch);
     const children = this.traverseToChildren(this.root, word, 0);
 
