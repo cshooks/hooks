@@ -3,6 +3,7 @@ import * as React from 'react';
 // https://dev.to/nickytonline/comment/9j7l
 type Children = Record<string, Node>;
 type Word = string | object;
+type TextSelector = (obj: any) => string;
 
 // https://www.geeksforgeeks.org/trie-insert-and-search/
 class Node {
@@ -14,7 +15,7 @@ class Node {
 
 interface ITrie {
   has: (word: string, exactSearch?: boolean) => boolean;
-  add: (word: Word, getText?: (obj: any) => string) => void;
+  add: (word: Word, getText?: TextSelector) => void;
   remove: (word: string) => void;
   isEmpty: () => boolean;
   search: (word: string) => Word[];
@@ -26,7 +27,7 @@ class Trie implements ITrie {
   constructor(
     words: Word[] = [],
     private isCaseInsensitive: boolean = true,
-    private getText: (obj: any) => string = obj => obj
+    private getText: TextSelector = obj => obj
   ) {
     this.root = new Node('');
     this.isCaseInsensitive = isCaseInsensitive;
@@ -68,10 +69,7 @@ class Trie implements ITrie {
     return exactSearch ? !!head.id : true;
   };
 
-  public add = (
-    wordToAdd: Word,
-    getText: (obj: any) => string = obj => obj
-  ): void => {
+  public add = (wordToAdd: Word, getText: TextSelector = obj => obj): void => {
     this.getText = this.getText || getText;
 
     let word = this.normalizeWord(wordToAdd);
@@ -202,13 +200,12 @@ function reducer(state: ReducerState, action: TrieAction): ReducerState {
  * Build a trie for an efficient string search
  * @param initialWords: string[] List of words to build
  * @param isCaseInsensitive: bool "Their" & "their" are different
- * @param getId: (obj: any) => string | number returns an ID from an object to be added
- * @param getText: (obj: any) => string returns a text from an object to be added
+ * @param getText: TextSelector returns a text from an object to be added
  */
 function useTrie(
   initialWords: Word[],
   isCaseInsensitive = true,
-  getText: (obj: any) => string = obj => obj
+  getText: TextSelector = obj => obj
 ): ITrie {
   const trie = new Trie(initialWords, isCaseInsensitive, getText);
   const [state, dispatch] = React.useReducer(reducer, { trie, word: '' });
