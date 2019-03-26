@@ -1,0 +1,18 @@
+{
+  "parse": {},
+  "compress": {
+    "drop_console": true
+  },
+  "mangle": {
+    "keep_fnames": true,
+    "properties": {}
+  },
+  "output": {},
+  "sourceMap": {
+    "content": "inline"
+  },
+  "nameCache": null,
+  "toplevel": false,
+  "ie8": false,
+  "warnings": false
+}

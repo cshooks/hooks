@@ -1,13 +1,12 @@
 // https://dev.to/nickytonline/comment/9j7l
 // https://www.geeksforgeeks.org/trie-insert-and-search/
 
-class TrieNode {
+interface ITrieNode {
   id: Word | undefined;
-  next: Children = {};
-
-  constructor(public character = '') {}
+  next: Children;
 }
-type Children = Record<string, TrieNode>;
+
+type Children = Record<string, ITrieNode>;
 type TextSelector = (obj: any) => string;
 
 type Word = string | object;
@@ -32,7 +31,7 @@ type ReducerState = {
 };
 
 export {
-  TrieNode,
+  ITrieNode,
   Children,
   TextSelector,
   Word,

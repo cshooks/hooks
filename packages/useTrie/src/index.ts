@@ -1,15 +1,23 @@
 import * as React from 'react';
 import {
-  TrieNode,
   TextSelector,
   Word,
   ITrie,
   TrieAction,
   ReducerState,
+  ITrieNode,
+  Children,
 } from './types';
 
+class TrieNode implements ITrieNode {
+  id: Word | undefined;
+  next: Children = {};
+
+  constructor(public character = '') {}
+}
+
 class Trie implements ITrie {
-  private root: TrieNode;
+  private root: ITrieNode;
 
   constructor(
     words: Word[] = [],
@@ -43,7 +51,7 @@ class Trie implements ITrie {
     let word = this.normalizeWord(wordToSearch);
     if (word === '') return false;
 
-    let head = this.root;
+    let head = this.root as ITrieNode;
     for (let i = 0; i < word.length; i++) {
       const c = word[i];
       if (!head.next[c]) {
@@ -62,7 +70,7 @@ class Trie implements ITrie {
     let word = this.normalizeWord(wordToAdd);
     if (this.has(word)) return;
 
-    let head: TrieNode = this.root;
+    let head: ITrieNode = this.root;
     for (let i = 0; i < word.length; i++) {
       const c = word[i];
       if (!head.next[c]) {
@@ -82,7 +90,7 @@ class Trie implements ITrie {
     this.root = this._remove(this.root, word);
   };
 
-  private _remove(node: TrieNode, word: string, depth: number = 0): TrieNode {
+  private _remove(node: ITrieNode, word: string, depth: number = 0): ITrieNode {
     if (!node) return new TrieNode();
 
     if (depth === word.length) {
@@ -104,21 +112,21 @@ class Trie implements ITrie {
     return node;
   }
 
-  private _isEmpty = (root: TrieNode = this.root): boolean => {
+  private _isEmpty = (root: ITrieNode = this.root): boolean => {
     return Object.keys(root.next).length === 0;
   };
   isEmpty = (): boolean => {
     return this._isEmpty(this.root);
   };
 
-  private isLastNode = (node: TrieNode): boolean =>
+  private isLastNode = (node: ITrieNode): boolean =>
     Object.keys(node.next).length === 0;
 
   private traverseToChildren(
-    node: TrieNode,
+    node: ITrieNode,
     word: string,
     depth: number
-  ): TrieNode {
+  ): ITrieNode {
     const c = word[depth];
     const exactSearch = false;
 
@@ -141,7 +149,7 @@ class Trie implements ITrie {
   };
 
   private searchChildren(
-    root: TrieNode,
+    root: ITrieNode,
     prefix: string,
     word: string,
     totalDepth: number,
