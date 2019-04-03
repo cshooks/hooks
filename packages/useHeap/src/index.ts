@@ -7,13 +7,15 @@ const enum ActionType {
   Add = "ADD",
   Set = "SET",
   Remove = "REMOVE",
-  Get = "GET"
+  Get = "GET",
+  Clear = "Clear"
 }
 
 type Action =
   | { type: ActionType.Add; payload: { value: Value } }
   | { type: ActionType.Set; payload: { values: Value[] } }
-  | { type: ActionType.Get };
+  | { type: ActionType.Get }
+  | { type: ActionType.Clear };
 
 // In-line swap: https://stackoverflow.com/a/16201730/4035
 function swap(values: Value[], i1: number, i2: number): Value[] {
@@ -118,6 +120,8 @@ function reducer(state: Value[], action: Action): Value[] {
     case ActionType.Set:
       const setValues = heapifyDown(action.payload.values);
       return [...setValues];
+    case ActionType.Clear:
+      return [];
     case ActionType.Get:
     default:
       return state;
@@ -163,7 +167,11 @@ function useMinHeap(initialValues: Value[] = []) {
     return freshValues.current[0];
   }
 
-  return { dump, add, get, peek };
+  function clear(): void {
+    dispatch({ type: ActionType.Clear });
+  }
+
+  return { dump, add, get, peek, clear };
 }
 
 export { useMinHeap };

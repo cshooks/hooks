@@ -4,6 +4,19 @@ import { useMinHeap } from "../src";
 // const log = console.log;
 
 describe("useMinHeap", () => {
+  it("clears the heap", () => {
+    const { result } = renderHook(() => useMinHeap([1, 2, 3]));
+    const heap = result.current;
+
+    act(() => {
+      heap.clear();
+    });
+
+    act(() => {
+      expect(heap.dump()).toEqual([]);
+    });
+  });
+
   it("returns undefined when heap is empty", () => {
     const { result } = renderHook(() => useMinHeap([]));
     const heap = result.current;
