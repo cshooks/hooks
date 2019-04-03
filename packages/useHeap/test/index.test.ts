@@ -1,10 +1,31 @@
-import { renderHook, act } from "react-hooks-testing-library";
-import { useMinHeap } from "../src";
+import { renderHook, act } from 'react-hooks-testing-library';
+import { useMinHeap } from '../src';
 
 // const log = console.log;
 
-describe("useMinHeap", () => {
-  it("clears the heap", () => {
+// describe('useMinHeap - Object Array', () => {
+//   it('handles an object array initialization', () => {
+//     // const input = [10, 2, 1, 99, 3, 5, 7];
+//     const input = [
+//       { id: 1, priority: 10, payload: { value: 'priority - 10' } },
+//       { id: 2, priority: 2, payload: { value: 'priority - 2' } },
+//       { id: 3, priority: 1, payload: { value: 'priority - 1' } },
+//       { id: 4, priority: 99, payload: { value: 'priority - 99' } },
+//       { id: 5, priority: 3, payload: { value: 'priority - 3' } },
+//       { id: 6, priority: 5, payload: { value: 'priority - 5' } },
+//       { id: 7, priority: 7, payload: { value: 'priority - 7' } },
+//     ];
+//     // const comparor;
+
+//     const { result } = renderHook(() => useMinHeap(input, comparor));
+//     const heap = result.current;
+
+//     act(() => expect(heap.dump()).toEqual(expected));
+//   });
+// });
+
+describe('useMinHeap - Number Array', () => {
+  it('clears the heap', () => {
     const { result } = renderHook(() => useMinHeap([1, 2, 3]));
     const heap = result.current;
 
@@ -17,7 +38,7 @@ describe("useMinHeap", () => {
     });
   });
 
-  it("returns undefined when heap is empty", () => {
+  it('returns undefined when heap is empty', () => {
     const { result } = renderHook(() => useMinHeap([]));
     const heap = result.current;
 
@@ -25,7 +46,7 @@ describe("useMinHeap", () => {
     act(() => expect(heap.peek()).toBeUndefined());
   });
 
-  it("peeks correctly without removing any items", () => {
+  it('peeks correctly without removing any items', () => {
     const input = [10, 2, 1, 99, 3];
     const { result } = renderHook(() => useMinHeap(input));
     const heap = result.current;
@@ -33,7 +54,7 @@ describe("useMinHeap", () => {
     input.map(_ => expect(heap.peek()).toEqual(1));
   });
 
-  it("gets minimum correctly", () => {
+  it('gets minimum correctly', () => {
     const { result } = renderHook(() => useMinHeap([]));
     const heap = result.current;
 
@@ -52,12 +73,12 @@ describe("useMinHeap", () => {
     act(() => expect(heap.get()).toBeUndefined());
   });
 
-  it("renders hook correctly", () => {
+  it('renders hook correctly', () => {
     const { result } = renderHook(() => useMinHeap([]));
     expect(result.current).not.toBeNull();
   });
 
-  it("adds all correctly", () => {
+  it('adds all correctly', () => {
     const { result } = renderHook(() => useMinHeap([]));
     const heap = result.current;
 
@@ -87,7 +108,7 @@ describe("useMinHeap", () => {
     expect(heap.dump()).toEqual([1, 3, 5, 6, 8, 9]);
   });
 
-  it("dumps correctly", () => {
+  it('dumps correctly', () => {
     const values = [1, 3, 5, 6, 8, 9];
     const { result } = renderHook(() => useMinHeap(values));
 
