@@ -72,16 +72,28 @@ const getLeftChild = (values: Value[], parentIndex: number) =>
  */
 function heapifyDown(values: Value[]): Value[] {
   let index = 0;
-  let copy = [...values];
+  // let copy = [...values];
+  // Move the last item to the top and trickle down
+  let lastIndex = values.length - 1;
+  let copy = [values[lastIndex], ...values.slice(0, lastIndex)];
   const size = copy.length;
 
   while (hasLeftChild(index, copy.length)) {
     let smallerChildIndex = getLeftChildIndex(index);
+    // log(
+    //   `index=${index} size=${size} smallerChildIndex=${smallerChildIndex},
+    //   getRightChildIndex=${getRightChildIndex(index)}
+    //   getLeftChildIndex=${getLeftChildIndex(index)}
+    //   hasRightChild()=${hasRightChild(index, size)},
+    //   getRightChild()=${getRightChild(copy, size)},
+    //   getLeftChild()=${getLeftChild(copy, size)}`
+    // );
     if (
       hasRightChild(index, size) &&
-      getRightChild(copy, size) < getLeftChild(copy, size)
+      getRightChild(copy, index) < getLeftChild(copy, index)
     ) {
       smallerChildIndex = getRightChildIndex(index);
+      // log(`Right child is smaller!`);
     }
 
     if (copy[index] < copy[smallerChildIndex]) break;
@@ -97,14 +109,26 @@ function heapifyUp(values: Value[]) {
   let heapedValues = [...values];
   let index = heapedValues.length - 1;
 
+  // log(
+  //   `index=${index},
+  //   getParentIndex(index)=${getParentIndex(index)},
+  //   hasParent(index)=${hasParent(index)},
+  //   getParent(heapedValues, index)=${getParent(heapedValues, index)},
+  //   heapedValues[index]=${heapedValues[index]}`,
+  //   heapedValues
+  // );
+
   while (
     hasParent(index) &&
     getParent(heapedValues, index) > heapedValues[index]
   ) {
+    // log(`while curr=${heapedValues[index]} index=${index}`);
     const parentIndex = getParentIndex(index);
     heapedValues = swap(heapedValues, parentIndex, index);
     index = parentIndex;
   }
+
+  // log(`   heapifyup result ===>`, heapedValues);
   return heapedValues;
 }
 

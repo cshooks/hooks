@@ -37,11 +37,13 @@ describe("useMinHeap", () => {
     const { result } = renderHook(() => useMinHeap([]));
     const heap = result.current;
 
-    const input = [10, 2, 1, 99, 3];
+    const input = [10, 2, 1, 99, 3, 5, 7];
     // ascending order
     const expectedValues = [...input].sort((a, b) => a - b);
 
     input.map(value => act(() => heap.add(value)));
+    // act(() => log(`minimum? heap.dump()`, heap.dump()));
+    // log(`minimum? heap.dump()`, heap.dump());
     expectedValues.map(expected =>
       act(() => expect(heap.get()).toBe(expected))
     );
