@@ -1,6 +1,6 @@
 {
   "name": "@cshooks/useheap",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "main": "dist/index.js",
   "umd:main": "dist/useheap.umd.production.js",
   "module": "dist/useheap.es.production.js",
