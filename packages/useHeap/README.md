@@ -1,3 +1,3 @@
-# TSDX Bootstrap
+# @cshooks/useheap
 
-This project was bootstrapped with [TSDX](https://github.com/jaredpalmer/tsdx).
+Returns a Heap data structure (you can use it for Priority Queue)

@@ -1,28 +1,28 @@
 {
   "/home/dance2die/src/github/cshooks/hooks/packages/useHeap/dist/useheap.cjs.development.js": {
-    "bundled": 4513,
-    "minified": 1601,
-    "gzipped": 681
+    "bundled": 4660,
+    "minified": 1658,
+    "gzipped": 700
   },
   "/home/dance2die/src/github/cshooks/hooks/packages/useHeap/dist/useheap.cjs.production.js": {
-    "bundled": 4513,
-    "minified": 1601,
-    "gzipped": 681
+    "bundled": 4660,
+    "minified": 1658,
+    "gzipped": 700
   },
   "/home/dance2die/src/github/cshooks/hooks/packages/useHeap/dist/useheap.umd.development.js": {
-    "bundled": 4974,
-    "minified": 1313,
-    "gzipped": 660
+    "bundled": 5131,
+    "minified": 1370,
+    "gzipped": 682
   },
   "/home/dance2die/src/github/cshooks/hooks/packages/useHeap/dist/useheap.umd.production.js": {
-    "bundled": 4974,
-    "minified": 1313,
-    "gzipped": 660
+    "bundled": 5131,
+    "minified": 1370,
+    "gzipped": 682
   },
   "/home/dance2die/src/github/cshooks/hooks/packages/useHeap/dist/useheap.es.production.js": {
-    "bundled": 4352,
-    "minified": 1474,
-    "gzipped": 627,
+    "bundled": 4499,
+    "minified": 1531,
+    "gzipped": 644,
     "treeshaked": {
       "rollup": {
         "code": 14,
