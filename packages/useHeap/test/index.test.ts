@@ -20,8 +20,10 @@ describe('useMinHeap - Object Array', () => {
     const { result } = renderHook(() => useMinHeap(input, comparor));
     const heap = result.current;
 
-    const expected = input.slice().sort(comparor);
-    act(() => expect(heap.dump()).toEqual(expected));
+    const expectedValues = input.slice().sort(comparor);
+    expectedValues.map(expected =>
+      act(() => expect(heap.get()).toBe(expected))
+    );
   });
 });
 
