@@ -152,9 +152,19 @@ function reducer(state: Value[], action: Action): Value[] {
   }
 }
 
-type HeapValue = Value | undefined;
+// type HeapValue = Value | undefined;
 
-function useMinHeap(initialValues: Value[] = []) {
+interface Heap {
+  dump: () => Value[];
+  add: (item: Value) => void;
+  get: () => Value | undefined;
+  peek: () => Value | undefined;
+  clear: () => void;
+}
+
+// function useMinHeap(initialValues: number[] | string[] = []);
+
+function useMinHeap(initialValues: Value[] = []): Heap {
   const [values, dispatch] = React.useReducer(
     reducer,
     initialValues,
@@ -175,7 +185,7 @@ function useMinHeap(initialValues: Value[] = []) {
     dispatch({ type: ActionType.Add, payload: { value } });
   }
 
-  function get(): HeapValue {
+  function get() {
     const minimumValue = freshValues.current[0];
 
     // We pop the first value and the current values is set to everything after the first item
@@ -187,7 +197,7 @@ function useMinHeap(initialValues: Value[] = []) {
     return minimumValue;
   }
 
-  function peek(): HeapValue {
+  function peek() {
     return freshValues.current[0];
   }
 
@@ -198,4 +208,4 @@ function useMinHeap(initialValues: Value[] = []) {
   return { dump, add, get, peek, clear };
 }
 
-export { useMinHeap };
+export { useMinHeap, Heap };
