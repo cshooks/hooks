@@ -25,5 +25,7 @@
     "tsdx": "^0.3.3",
     "typescript": "^3.4.1"
   },
-  "gitHead": "b9d6ed6e16126f6718963650a66d4dc8cc227a87"
+  "publishConfig": {
+    "access": "public"
+  }
 }
