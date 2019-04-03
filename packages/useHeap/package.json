@@ -1,6 +1,10 @@
 {
   "name": "@cshooks/useheap",
   "version": "0.0.1-alpha.4",
+  "description": "A React Hook for Min/Max Heap or Priority Queue",
+  "author": "dance2die <sungmkim80@gmail.com>",
+  "homepage": "https://github.com/cshooks/hooks/tree/master/packages/useHeap",
+  "license": "MIT",
   "main": "dist/index.js",
   "umd:main": "dist/useheap.umd.production.js",
   "module": "dist/useheap.es.production.js",
@@ -25,7 +29,18 @@
     "tsdx": "^0.3.3",
     "typescript": "^3.4.1"
   },
+  "peerDependencies": {
+    "react": "^16.8.0"
+  },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "heap",
+    "cs",
+    "priorityqueue",
+    "priority queue"
+  ]
 }
