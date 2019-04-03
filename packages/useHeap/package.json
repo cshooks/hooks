@@ -1,0 +1,22 @@
+{
+  "name": "useheap",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "umd:main": "dist/useheap.umd.production.js",
+  "module": "dist/useheap.es.production.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "prepare": "npm run build",
+    "test": "tsdx test"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "tsdx": "^0.3.3",
+    "typescript": "^3.4.1"
+  }
+}
