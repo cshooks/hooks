@@ -1,6 +1,6 @@
 {
-  "name": "useheap",
-  "version": "0.1.0",
+  "name": "@cshooks/useheap",
+  "version": "0.0.1-alpha.0",
   "main": "dist/index.js",
   "umd:main": "dist/useheap.umd.production.js",
   "module": "dist/useheap.es.production.js",
@@ -16,6 +16,12 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.11",
+    "@types/react": "^16.8.10",
+    "@types/react-dom": "^16.8.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-hooks-testing-library": "^0.4.0",
+    "react-testing-library": "^6.0.4",
     "tsdx": "^0.3.3",
     "typescript": "^3.4.1"
   }

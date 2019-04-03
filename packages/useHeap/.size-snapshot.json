@@ -1,35 +1,35 @@
 {
   "/home/dance2die/src/github/cshooks/hooks/packages/useHeap/dist/useheap.cjs.development.js": {
-    "bundled": 125,
-    "minified": 72,
-    "gzipped": 86
+    "bundled": 4513,
+    "minified": 1601,
+    "gzipped": 681
   },
   "/home/dance2die/src/github/cshooks/hooks/packages/useHeap/dist/useheap.cjs.production.js": {
-    "bundled": 81,
-    "minified": 50,
-    "gzipped": 66
+    "bundled": 4513,
+    "minified": 1601,
+    "gzipped": 681
   },
   "/home/dance2die/src/github/cshooks/hooks/packages/useHeap/dist/useheap.umd.development.js": {
-    "bundled": 404,
-    "minified": 229,
-    "gzipped": 174
+    "bundled": 4974,
+    "minified": 1313,
+    "gzipped": 660
   },
   "/home/dance2die/src/github/cshooks/hooks/packages/useHeap/dist/useheap.umd.production.js": {
-    "bundled": 354,
-    "minified": 207,
-    "gzipped": 160
+    "bundled": 4974,
+    "minified": 1313,
+    "gzipped": 660
   },
   "/home/dance2die/src/github/cshooks/hooks/packages/useHeap/dist/useheap.es.production.js": {
-    "bundled": 63,
-    "minified": 33,
-    "gzipped": 52,
+    "bundled": 4352,
+    "minified": 1474,
+    "gzipped": 627,
     "treeshaked": {
       "rollup": {
-        "code": 0,
-        "import_statements": 0
+        "code": 14,
+        "import_statements": 14
       },
       "webpack": {
-        "code": 951
+        "code": 998
       }
     }
   }
