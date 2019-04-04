@@ -2,7 +2,7 @@ import React from "react";
 
 // const log = console.log;
 
-type Value = number;
+type Value = number | string | object;
 const enum ActionType {
   Add = "ADD",
   Set = "SET",
@@ -11,14 +11,14 @@ const enum ActionType {
   Clear = "Clear"
 }
 
-type Action =
-  | { type: ActionType.Add; payload: { value: Value } }
-  | { type: ActionType.Set; payload: { values: Value[] } }
+type Action<T> =
+  | { type: ActionType.Add; payload: { value: T } }
+  | { type: ActionType.Set; payload: { values: T[] } }
   | { type: ActionType.Get }
   | { type: ActionType.Clear };
 
 // In-line swap: https://stackoverflow.com/a/16201730/4035
-function swap(values: Value[], i1: number, i2: number): Value[] {
+function swap<T>(values: T[], i1: number, i2: number): T[] {
   // log(`       swap Before => ${values}, i1=${i1}, i2=${i2}`);
   // values[i2] = [values[i1], (values[i1] = values[i2])][0];
   // log(`       swap AFTER => ${values}, i1=${i1}, i2=${i2}`);
@@ -45,7 +45,7 @@ function swap(values: Value[], i1: number, i2: number): Value[] {
 const getParentIndex = (childIndex: number): number => ~~((childIndex - 1) / 2);
 const hasParent = (childIndex: number): boolean =>
   getParentIndex(childIndex) >= 0;
-const getParent = (values: Value[], childIndex: number): Value =>
+const getParent = <T>(values: T[], childIndex: number): T =>
   values[getParentIndex(childIndex)];
 
 // type GetChildIndex = (parentIndex: number) => number;
@@ -56,21 +56,21 @@ const getParent = (values: Value[], childIndex: number): Value =>
 const getRightChildIndex = (parentIndex: number) => parentIndex * 2 + 2;
 const hasRightChild = (parentIndex: number, size: number): boolean =>
   getRightChildIndex(parentIndex) < size;
-const getRightChild = (values: Value[], parentIndex: number) =>
+const getRightChild = <T>(values: T[], parentIndex: number) =>
   values[getRightChildIndex(parentIndex)];
 
 const getLeftChildIndex = (parentIndex: number) => parentIndex * 2 + 1;
 const hasLeftChild = (parentIndex: number, size: number): boolean =>
   getLeftChildIndex(parentIndex) < size;
-const getLeftChild = (values: Value[], parentIndex: number) =>
+const getLeftChild = <T>(values: T[], parentIndex: number) =>
   values[getLeftChildIndex(parentIndex)];
 
 /**
  * Heapify the last item
- * @param {Value[]} values Values to re-heapify
- * @returns {Value[]} A valid MinHeap
+ * @param {T[]} values Values to re-heapify
+ * @returns {T[]} A valid MinHeap
  */
-function heapifyDown(values: Value[]): Value[] {
+function heapifyDown<T>(values: T[]): T[] {
   let index = 0;
   // let copy = [...values];
   // Move the last item to the top and trickle down
@@ -105,7 +105,7 @@ function heapifyDown(values: Value[]): Value[] {
   return copy;
 }
 
-function heapifyUp(values: Value[]) {
+function heapifyUp<T>(values: T[]) {
   let heapedValues = [...values];
   let index = heapedValues.length - 1;
 
@@ -132,11 +132,11 @@ function heapifyUp(values: Value[]) {
   return heapedValues;
 }
 
-function addValue(values: Value[], value: Value) {
+function addValue<T>(values: T[], value: T) {
   return heapifyUp([...values, value]);
 }
 
-function reducer(state: Value[], action: Action): Value[] {
+function reducer<T>(state: T[], action: Action<T>): T[] {
   switch (action.type) {
     case ActionType.Add:
       const addValues = addValue(state, action.payload.value);
@@ -164,7 +164,7 @@ interface Heap {
 
 // function useMinHeap(initialValues: number[] | string[] = []);
 
-function useMinHeap(initialValues: Value[] = []): Heap {
+function useMinHeap<T extends Value>(initialValues: T[] = []): Heap {
   const [values, dispatch] = React.useReducer(
     reducer,
     initialValues,
@@ -173,8 +173,8 @@ function useMinHeap(initialValues: Value[] = []): Heap {
   const freshValues = React.useRef(values);
   freshValues.current = values;
 
-  function initializer(values: Value[]): Value[] {
-    return values.reduce((acc, value) => addValue(acc, value), [] as Value[]);
+  function initializer(values: T[]): T[] {
+    return values.reduce((acc: T[], value) => addValue(acc, value), [] as T[]);
   }
 
   function dump() {
