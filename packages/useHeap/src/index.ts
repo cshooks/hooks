@@ -2,7 +2,7 @@ import React from "react";
 
 // const log = console.log;
 
-type Value = number | string | object;
+// type Value = number | string | object;
 const enum ActionType {
   Add = "ADD",
   Set = "SET",
@@ -162,9 +162,62 @@ interface Heap<T> {
   clear: () => void;
 }
 
-// function useMinHeap(initialValues: number[] | string[] = []);
+interface Comparor<T> {
+  (a: T, b: T): number;
+}
 
-function useMinHeap<T extends Value>(initialValues: T[] = []): Heap<T> {
+// type Unpacked<T> = T extends (infer R)[] ? R : T;
+type ComparorParameter<T> = T extends string | number
+  ? [] | [Comparor<T>]
+  : [Comparor<T>];
+
+function isNumberArray(o: any[]): o is number[] {
+  return o.every(n => typeof n === "number");
+}
+
+function isStringArray(o: any[]): o is string[] {
+  return o.every(n => typeof n === "string");
+}
+
+const stringComparer = <T extends string>(a: T, b: T) =>
+  a < b ? -1 : a > b ? 1 : 0;
+const numberComparer = <T extends number>(a: T, b: T) => a - b;
+function getDefaultComparitor<T>(args: T[]): Comparor<T> | undefined {
+  if (isStringArray(args)) {
+    return stringComparer as Comparor<T>;
+  } else if (isNumberArray(args)) {
+    return numberComparer as Comparor<T>;
+  }
+
+  return undefined;
+}
+
+// function useMinHeap<T extends number>(initialValues: number[]): Heap<T>;
+// function useMinHeap<T extends string>(initialValues: string[]): Heap<T>;
+// function useMinHeap<T extends object>(
+//   initialValues: object[],
+//   comparor: Comparor<T>
+// ): Heap<T>;
+
+// function useMinHeap<T extends object | number | string>(
+//   initialValues: T[] = [],
+//   comparor?: Comparor<T>
+// ): Heap<T> {
+function useMinHeap(initialValues: number[]): Heap<number>;
+function useMinHeap(initialValues: string[]): Heap<string>;
+function useMinHeap<T>(
+  initialValues: T[],
+  ...comp: ComparorParameter<T>
+): Heap<T>;
+function useMinHeap<T>(initialValues: T[], comp?: Comparor<T>): Heap<T> {
+  if (!comp) {
+    comp = getDefaultComparitor(initialValues);
+    // console.log(`➕   Default COMP assigned!`, ...initialValues, comp);
+    if (!comp) {
+      throw new Error(`😫 unable to determine default comparitor!`);
+    }
+  }
+
   const [values, dispatch] = React.useReducer(
     reducer,
     initialValues,

@@ -15,7 +15,7 @@ import { useMinHeap } from '../src';
 //       { id: 6, priority: 5, payload: { value: 'priority - 5' } },
 //       { id: 7, priority: 7, payload: { value: 'priority - 7' } },
 //     ];
-//     const comparor = (a, b) => a.priority - b.priority;
+//     const comparor = (a: any, b: any) => a.priority - b.priority;
 
 //     const { result } = renderHook(() => useMinHeap(input, comparor));
 //     const heap = result.current;
@@ -58,7 +58,7 @@ describe('useMinHeap - Number Array', () => {
   });
 
   it('gets minimum correctly', () => {
-    const { result } = renderHook(() => useMinHeap([]));
+    const { result } = renderHook(() => useMinHeap<number>([]));
     const heap = result.current;
 
     const input = [10, 2, 1, 99, 3, 5, 7];
@@ -82,7 +82,7 @@ describe('useMinHeap - Number Array', () => {
   });
 
   it('adds all correctly', () => {
-    const { result } = renderHook(() => useMinHeap([]));
+    const { result } = renderHook(() => useMinHeap<number>([]));
     const heap = result.current;
 
     act(() => {
@@ -94,7 +94,7 @@ describe('useMinHeap - Number Array', () => {
 
   // prettier-ignore
   it("adds correctly", () => {
-    const { result } = renderHook(() => useMinHeap([]));
+    const { result } = renderHook(() => useMinHeap<number>([]));
     const heap = result.current;
 
     act(() => { heap.add(1); });
