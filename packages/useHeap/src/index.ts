@@ -207,13 +207,13 @@ function useMinHeap(initialValues: number[]): Heap<number>;
 function useMinHeap(initialValues: string[]): Heap<string>;
 function useMinHeap<T>(
   initialValues: T[],
-  ...comp: ComparorParameter<T>
+  ...comparor: ComparorParameter<T>
 ): Heap<T>;
-function useMinHeap<T>(initialValues: T[], comp?: Comparor<T>): Heap<T> {
-  if (!comp) {
-    comp = getDefaultComparitor(initialValues);
-    // console.log(`➕   Default COMP assigned!`, ...initialValues, comp);
-    if (!comp) {
+function useMinHeap<T>(initialValues: T[], comparor?: Comparor<T>): Heap<T> {
+  if (!comparor) {
+    comparor = getDefaultComparitor(initialValues);
+    // console.log(`➕   Default COMP assigned!`, ...initialValues, comparor);
+    if (!comparor) {
       throw new Error(`😫 unable to determine default comparitor!`);
     }
   }
