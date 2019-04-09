@@ -230,15 +230,15 @@ function useMinHeap<T>(initialValues: T[], comparor?: Comparor<T>): Heap<T> {
     return values.reduce((acc: T[], value) => addValue(acc, value), [] as T[]);
   }
 
-  function dump() {
+  function dump(): T[] {
     return freshValues.current as T[];
   }
 
-  function add(value: T) {
+  function add(value: T): void {
     dispatch({ type: ActionType.Add, payload: { value } });
   }
 
-  function get() {
+  function get(): T {
     const minimumValue = freshValues.current[0];
 
     // We pop the first value and the current values is set to everything after the first item
@@ -250,7 +250,7 @@ function useMinHeap<T>(initialValues: T[], comparor?: Comparor<T>): Heap<T> {
     return minimumValue as T;
   }
 
-  function peek() {
+  function peek(): T {
     return freshValues.current[0] as T;
   }
 
