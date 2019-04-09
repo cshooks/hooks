@@ -188,7 +188,7 @@ function reducer<T>(state: T[] = [], action: Action<T>): T[] {
 
 function useMinHeap(initialValues: number[]): Heap<number>;
 function useMinHeap(initialValues: string[]): Heap<string>;
-function useMinHeap<T extends object>(
+function useMinHeap<T>(
   initialValues: T[],
   ...comparor: ComparorParameter<T>
 ): Heap<T>;
