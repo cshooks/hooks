@@ -32,5 +32,39 @@
         "code": 998
       }
     }
+  },
+  "c:\\misc\\src\\github\\dance2die\\hooks\\packages\\useHeap\\dist/useheap.cjs.development.js": {
+    "bundled": 5727,
+    "minified": 1687,
+    "gzipped": 708
+  },
+  "c:\\misc\\src\\github\\dance2die\\hooks\\packages\\useHeap\\dist/useheap.umd.development.js": {
+    "bundled": 6242,
+    "minified": 1399,
+    "gzipped": 693
+  },
+  "c:\\misc\\src\\github\\dance2die\\hooks\\packages\\useHeap\\dist/useheap.umd.production.js": {
+    "bundled": 6242,
+    "minified": 1399,
+    "gzipped": 693
+  },
+  "c:\\misc\\src\\github\\dance2die\\hooks\\packages\\useHeap\\dist/useheap.cjs.production.js": {
+    "bundled": 5727,
+    "minified": 1687,
+    "gzipped": 708
+  },
+  "c:\\misc\\src\\github\\dance2die\\hooks\\packages\\useHeap\\dist/useheap.es.production.js": {
+    "bundled": 5566,
+    "minified": 1560,
+    "gzipped": 656,
+    "treeshaked": {
+      "rollup": {
+        "code": 14,
+        "import_statements": 14
+      },
+      "webpack": {
+        "code": 998
+      }
+    }
   }
 }
