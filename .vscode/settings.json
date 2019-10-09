@@ -2,5 +2,6 @@
   "workbench.colorCustomizations": {
     "[Cobalt2]": {}
   },
-  "window.titleBarStyle": "custom"
+  "window.titleBarStyle": "custom",
+  "peacock.color": "#00b3e6"
 }

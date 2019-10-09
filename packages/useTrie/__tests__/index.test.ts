@@ -1,6 +1,7 @@
 'use strict';
 
-import { renderHook, cleanup, act } from 'react-hooks-testing-library';
+import { renderHook, act } from '@testing-library/react-hooks';
+import { cleanup, } from '@testing-library/react'
 import useTrie, { Trie } from '../src/index';
 
 describe('useTrie Hook tests', () => {
